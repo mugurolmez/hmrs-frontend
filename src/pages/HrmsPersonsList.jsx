@@ -2,7 +2,7 @@ import React, { useEffect,useState } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
 import HrmsPersonService from '../services/hrmsPersonService';
 
-export default function HrmsPersonList() {
+export default function HrmsPersonsList() {
 
   const [hrmsPersons, setHrmsPersons] = useState([]);
 

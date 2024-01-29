@@ -4,10 +4,11 @@ import LeftSidebar from './LeftSidebar'
 import { Route, Routes } from 'react-router-dom'
 import UserList from "../pages/UsersList"
 import JobSeekerList from "../pages/JobSeekersList"
-import HmrsPErsonList from "../pages/HrmsPersonsList"
-import EmploterList from "../pages/EmployerList"
+import EmployerList from '../pages/EmployerList'
 import ImagesList from '../pages/ImagesList'
 import TemporaryEmployerList from '../pages/TemporaryEmployerList'
+import HrmsPersonsList from '../pages/HrmsPersonsList'
+import AddUserForm from '../forms/AddUserForm'
 
 export default function Dashboard() {
   return (
@@ -18,12 +19,14 @@ export default function Dashboard() {
           <LeftSidebar />
         </GridColumn>
         <GridColumn width={12}>
+          
           <Routes>
-            <Route path="/" Component={UserList} />
+            <Route path="/" Component={AddUserForm} />
+            <Route path="/adduserform" Component={AddUserForm} />
             <Route path="/userList" Component={UserList} />
             <Route path="/jobSeekerList" Component={JobSeekerList} />
-            <Route path="/hmrsPersonList" Component={HmrsPErsonList} />
-            <Route path="/employerList" Component={EmploterList} />
+            <Route path="/hrmsPersonsList" Component={HrmsPersonsList} />
+            <Route path="/employerList" Component={EmployerList} />
             <Route path="/imageList" Component={ImagesList} />
             <Route path="/temporaryEmployerList" Component={TemporaryEmployerList} />
             <Route path="/jobDescriptionsList" Component={JobSeekerList} />

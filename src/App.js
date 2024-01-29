@@ -8,10 +8,10 @@ function App() {
     <div className="App">
       <Container>
         <Navi></Navi>
+        
         <Container className="ui main container">
           <Dashboard></Dashboard>
         </Container>
-
 
       </Container>
 

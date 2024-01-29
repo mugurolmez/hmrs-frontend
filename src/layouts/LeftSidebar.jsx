@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuMenu } from 'semantic-ui-react'
 
 export default function LeftSidebar() {
@@ -10,10 +11,10 @@ export default function LeftSidebar() {
 <MenuMenu position='left'>
 <Dropdown item text='Kullanıcı Listeleri'>
     <DropdownMenu >
-        <DropdownItem >Kullanıcı Listesi</DropdownItem>
-        <DropdownItem>İş Arayan Listesi</DropdownItem>
-        <DropdownItem>Hrms Personel Listesi</DropdownItem>
-        <DropdownItem>İşveren Üye Listesi</DropdownItem>
+        <DropdownItem as={NavLink} to='/userlist' >Kullanıcı Listesi</DropdownItem>
+        <DropdownItem as={NavLink} to='/jobseekerlist' >İş Arayan Listesi</DropdownItem>
+        <DropdownItem as={NavLink} to='/hrmsPersonsList' >Hrms Personel Listesi</DropdownItem>
+        <DropdownItem as={NavLink} to='/employerlist'> İşveren Üye Listesi</DropdownItem>
 
     </DropdownMenu>
 </Dropdown>
