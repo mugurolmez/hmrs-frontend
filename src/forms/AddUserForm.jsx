@@ -82,7 +82,7 @@ function AddUserForm() {
                 name='password'
               />
 
-              <button type='submit' disabled={!formik.isValid}>
+              <button  type='submit' disabled={!formik.isValid} onTouchStart={()=> console.log("butona tıklandı")}>
                 Kayıt Ol
               </button>
             </Form>

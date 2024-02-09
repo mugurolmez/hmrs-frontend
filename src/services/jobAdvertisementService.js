@@ -15,4 +15,13 @@ getAllActiveTrueDESC(){
 getAllActiveTrueASC(){
     return axios.get("http://localhost:8080/api/JobAdvertisements/getAllActiveTrueASC")
 }
+getAllActiveFalse(){
+    return axios.get("http://localhost:8080/api/JobAdvertisements/getAllActiveFalse")
+}
+jobAdvertisementPassive(jobAdvertisementId){
+    return axios.patch(`http://localhost:8080/api/JobAdvertisements/passive/${jobAdvertisementId}`)
+}
+jobAdvertisementActivate(jobAdvertisementId){
+    return axios.patch(`http://localhost:8080/api/JobAdvertisements/activate/${jobAdvertisementId}`)
+}
 }

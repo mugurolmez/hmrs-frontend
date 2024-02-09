@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import {  Container, Menu, MenuItem, MenuMenu } from 'semantic-ui-react'
+import { Menu, MenuItem, MenuMenu } from 'semantic-ui-react'
 import SingedIn from './SingedIn'
 import SingOut from './SingOut'
 import Languages from './Languages'
+import { NavLink } from 'react-router-dom'
 
 export default function Navi() {
   const [IsAutenticated, setIsAutenticed] = useState(false)
@@ -20,18 +21,16 @@ export default function Navi() {
     
       <Menu inverted>
         <MenuItem name='Ana Sayfa' />
-        <Container>       
+        <MenuItem as={NavLink} to='/allactivejobAdvertisementsList' name="İş İlanlar"/>
+           
         <MenuMenu position='right'>
             <Languages position='right'/>
           {/* alt komponente data geçme örneği singOut={handleSingOut} bu işleme props denıyor 
           alt komponente veri gondermıs oluyoruz */}
             {IsAutenticated?<SingedIn singOut={handleSingOut} />
             :<SingOut singIn={handleSingIn}/>}
-            
-           
-
           </MenuMenu>
-          </Container>
+         
       </Menu>
     </div>
   )

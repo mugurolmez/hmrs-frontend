@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
+import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table, Button } from 'semantic-ui-react';
 import TemporaryEmployerService from '../services/temporaryEmployerService';
 
 
@@ -27,9 +27,9 @@ export default function TemporaryEmployerList() {
             <TableHeaderCell>Password</TableHeaderCell>
             <TableHeaderCell>Şirket Adı</TableHeaderCell>
             <TableHeaderCell>Web Adresi</TableHeaderCell>
-            <TableHeaderCell>Telefon Numarası</TableHeaderCell>
-            <TableHeaderCell>Onay Durumu</TableHeaderCell>
-
+            <TableHeaderCell>Telefon nu</TableHeaderCell>
+            <TableHeaderCell> Onay Durumu</TableHeaderCell>
+            <TableHeaderCell></TableHeaderCell>
           </TableRow>
         </TableHeader>
 
@@ -47,6 +47,7 @@ export default function TemporaryEmployerList() {
             <TableCell>{temporaryEmployer.webSite}</TableCell>
             <TableCell>{temporaryEmployer.phoneNumber}</TableCell>
             <TableCell> <span style={{ color: temporaryEmployer.approvalStatus ? 'green' : 'red' }}>&bull;</span></TableCell>
+            <TableCell><Button>Onayla</Button></TableCell>
           </TableRow>
           ))
 

@@ -40,3 +40,6 @@ select {
 .error {
   color: red;
 }
+.tableDiv {
+  margin-left: 0; /* veya istediğiniz değeri ekleyin */
+}

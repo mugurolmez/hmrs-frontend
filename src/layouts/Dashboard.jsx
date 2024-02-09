@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, GridColumn } from 'semantic-ui-react'
-import LeftSidebar from './LeftSidebar'
+
 import { Route, Routes } from 'react-router-dom'
 import UserList from "../pages/UsersList"
 import JobSeekerList from "../pages/JobSeekersList"
@@ -10,18 +10,18 @@ import TemporaryEmployerList from '../pages/TemporaryEmployerList'
 import HrmsPersonsList from '../pages/HrmsPersonsList'
 import AddUserForm from '../forms/AddUserForm'
 
+import AllActiveJobAdvertisemenstList from '../pages/AllActiveJobAdvertisementsList'
+import AllPassiveJobAdvertisemenstList from '../pages/AllPassiveJobAdvertisementsList'
+import ImageGetAllImages from '../pages/ImageGetAllImages'
+
 export default function Dashboard() {
   return (
-    <div>
-
-      <Grid>
-        <GridColumn width={4}>
-          <LeftSidebar />
-        </GridColumn>
-        <GridColumn width={12}>
-          
-          <Routes>
-            <Route path="/" Component={AddUserForm} />
+  
+      <Grid >
+   
+        <GridColumn width={14} textAlign='left'>
+          <Routes >
+            <Route path="/" Component={ImageGetAllImages} />
             <Route path="/adduserform" Component={AddUserForm} />
             <Route path="/userList" Component={UserList} />
             <Route path="/jobSeekerList" Component={JobSeekerList} />
@@ -30,10 +30,13 @@ export default function Dashboard() {
             <Route path="/imageList" Component={ImagesList} />
             <Route path="/temporaryEmployerList" Component={TemporaryEmployerList} />
             <Route path="/jobDescriptionsList" Component={JobSeekerList} />
-
+            <Route path="/allactivejobAdvertisementsList" Component={AllActiveJobAdvertisemenstList} />
+            <Route path="/allpassivejobAdvertisementsList" Component={AllPassiveJobAdvertisemenstList} />
+            <Route path="/imagegetallimages" Component={ImageGetAllImages} />
           </Routes>
         </GridColumn>
       </Grid>
-    </div>
+      
+ 
   )
 }
