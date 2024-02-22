@@ -20,7 +20,7 @@ export default function Navi() {
     <div>
     
       <Menu inverted>
-        <MenuItem name='Ana Sayfa' />
+        <MenuItem name='Ana Sayfa' as={NavLink} to='/' />
         <MenuItem as={NavLink} to='/allactivejobAdvertisementsList' name="İş İlanlar"/>
            
         <MenuMenu position='right'>

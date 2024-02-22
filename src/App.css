@@ -43,3 +43,6 @@ select {
 .tableDiv {
   margin-left: 0; /* veya istediğiniz değeri ekleyin */
 }
+.right-aligned-select {
+  float: right;
+}

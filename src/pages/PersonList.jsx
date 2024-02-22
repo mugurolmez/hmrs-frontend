@@ -1,15 +1,15 @@
 import React, { useEffect,useState } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import HrmsPersonService from '../services/hrmsPersonService';
+import PersonService from '../services/personService';
 
-export default function HrmsPersonsList() {
+export default function PersonList() {
 
-  const [hrmsPersons, setHrmsPersons] = useState([]);
+  const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    let hrmsPersonService = new HrmsPersonService();
-        hrmsPersonService.getHrmsPersons().then(result=>setHrmsPersons(result.data.data));},[]);
-  
+    let personService = new PersonService();
+    personService.getPersons().then(result => setPersons(result.data.data));}, []);
+   
     return (
 
       <div>
@@ -17,33 +17,32 @@ export default function HrmsPersonsList() {
        <Table celled>
         <TableHeader>
           <TableRow>
-            <TableHeaderCell>Kullanıcı ID</TableHeaderCell>
-            <TableHeaderCell>Personel ID</TableHeaderCell>
-            <TableHeaderCell>Hrms Personel ID</TableHeaderCell>
-            <TableHeaderCell>Email</TableHeaderCell>
-            <TableHeaderCell>Parola</TableHeaderCell>
+            <TableHeaderCell>Kişi ID</TableHeaderCell>
             <TableHeaderCell>Adı</TableHeaderCell>
             <TableHeaderCell>Soyadı</TableHeaderCell>
-            <TableHeaderCell>Doğum Tarihi</TableHeaderCell>
+            <TableHeaderCell>Dogum Tarihi</TableHeaderCell>
             <TableHeaderCell>Tc Kimlik No</TableHeaderCell>
+            <TableHeaderCell>Kullanıcı ID</TableHeaderCell>
+            <TableHeaderCell>Email</TableHeaderCell>
+            <TableHeaderCell>Parola</TableHeaderCell>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {
-            hrmsPersons.map((hrmsperson) => (
+            persons.map((person) => (
               // Her bir kullanıcı için TableRow oluşturuyoruz.
               // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-              <TableRow key={hrmsperson.hrmsPersonId}>
-                <TableCell>{hrmsperson.userId}</TableCell>
-                <TableCell>{hrmsperson.personId}</TableCell>
-                <TableCell>{hrmsperson.hrmsPersonId}</TableCell>
-                <TableCell>{hrmsperson.email}</TableCell>
-                <TableCell>{hrmsperson.password}</TableCell>
-                <TableCell>{hrmsperson.name}</TableCell>
-                <TableCell>{hrmsperson.lastName}</TableCell>
-                <TableCell>{hrmsperson.birthDate}</TableCell>
-                <TableCell>{hrmsperson.nationalityNumber}</TableCell>
+              <TableRow key={person.personId}>
+                 <TableCell>{person.personId}</TableCell>
+                <TableCell>{person.name}</TableCell>
+                <TableCell>{person.lastName}</TableCell>
+                <TableCell>{person.birthDate}</TableCell>
+                <TableCell>{person.nationalityNumber}</TableCell>
+                <TableCell>{person.userId}</TableCell>
+                <TableCell>{person.email}</TableCell>
+                <TableCell>{person.password}</TableCell>
+       
               </TableRow>
             ))
 

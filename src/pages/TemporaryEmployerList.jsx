@@ -1,20 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table, Button } from 'semantic-ui-react';
+import {
+  ModalHeader,
+  ModalContent,
+  Modal,
+  TableRow,
+  TableHeaderCell,
+  TableHeader,
+  TableFooter,
+  TableCell,
+  TableBody,
+  MenuItem,
+  Icon,
+  Menu,
+  Table,
+  Button
+} from 'semantic-ui-react';
+
 import TemporaryEmployerService from '../services/temporaryEmployerService';
+import VerifyEmployerForm from '../forms/VerifyEmployerForm';
 
 
-export default function TemporaryEmployerList() {
+export default function TemporaryEmployerList(temporaryEmployerId,) {
   // Kullanıcıları depolamak için bir state kullanıyoruz.
   const [temporaryEmployers, setTemporaryEmployers] = useState([]);
+  const [selectedTemporaryEmployerId, setselectedTemporaryEmployerId] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // Component yüklendiğinde yapılması gereken işlemler burada yer alır.
 
-    // userService.getUsers() ile kullanıcı verilerini çekiyoruz.
-    // then bloğunda gelen veriyi setUsers ile state'e atıyoruz.
     let temporaryEmployerService = new TemporaryEmployerService();
     temporaryEmployerService.getTemporaryEployers().then(result => setTemporaryEmployers(result.data.data));
-  }, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
+  }, []);
+
+  const handleApproveClick = (temporaryEmployerId) => {
+    setselectedTemporaryEmployerId(temporaryEmployerId);
+    openModal()
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const updateTemporaryEmployers = (updatedList) => {
+    setTemporaryEmployers(updatedList);
+  };
 
   return (
     <div>
@@ -36,23 +68,39 @@ export default function TemporaryEmployerList() {
         <TableBody>
           {
             temporaryEmployers.map((temporaryEmployer) => (
-          // Her bir kullanıcı için TableRow oluşturuyoruz.
-          // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-          <TableRow key={temporaryEmployer.employerId}>
-            <TableCell>{temporaryEmployer.userId}</TableCell>
-            <TableCell>{temporaryEmployer.employerId}</TableCell>
-            <TableCell>{temporaryEmployer.email}</TableCell>
-            <TableCell>{temporaryEmployer.password}</TableCell>
-            <TableCell>{temporaryEmployer.corporateName}</TableCell>
-            <TableCell>{temporaryEmployer.webSite}</TableCell>
-            <TableCell>{temporaryEmployer.phoneNumber}</TableCell>
-            <TableCell> <span style={{ color: temporaryEmployer.approvalStatus ? 'green' : 'red' }}>&bull;</span></TableCell>
-            <TableCell><Button>Onayla</Button></TableCell>
-          </TableRow>
-          ))
+              // Her bir kullanıcı için TableRow oluşturuyoruz.
+              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+              <TableRow key={temporaryEmployer.employerId}>
+                <TableCell>{temporaryEmployer.userId}</TableCell>
+                <TableCell>{temporaryEmployer.employerId}</TableCell>
+                <TableCell>{temporaryEmployer.email}</TableCell>
+                <TableCell>{temporaryEmployer.password}</TableCell>
+                <TableCell>{temporaryEmployer.corporateName}</TableCell>
+                <TableCell>{temporaryEmployer.webSite}</TableCell>
+                <TableCell>{temporaryEmployer.phoneNumber}</TableCell>
 
-            }
+                <TableCell> <span style={{ color: temporaryEmployer.approvalStatus ? 'green' : 'red' }}>&bull;</span></TableCell>
+                <TableCell><Button
+                  onClick={() => handleApproveClick(temporaryEmployer.employerId)}
+                >Onayla</Button></TableCell>
+              </TableRow>
+            ))
+
+          }
         </TableBody>
+
+        {selectedTemporaryEmployerId && (
+          <Modal open={isModalOpen} onClose={closeModal} size="mini">
+            <ModalHeader> Employer Onaylama Formu</ModalHeader>
+            <ModalContent>
+              <VerifyEmployerForm
+                temporaryEmployerId={selectedTemporaryEmployerId}
+                closeModal={closeModal}
+                updateTemporaryEmployers={updateTemporaryEmployers}
+              />
+            </ModalContent>
+          </Modal>
+        )}
 
         <TableFooter>
           <TableRow>

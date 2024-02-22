@@ -1,35 +1,85 @@
 import React, { useEffect, useState } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table, Button } from 'semantic-ui-react';
 import JobAdvetisementService from '../services/jobAdvertisementService'
-
+import { Form, Formik } from 'formik';
+import FormikControl from '../component/FormikControl';
+import * as Yup from 'yup';
 
 
 export default function AllActiveJobAdvertisemenstList() {
+
   const [jobAdvertisements, setjobAdvertisement] = useState([])
 
+
+
   useEffect(() => {
-    let jobAdvetisementService = new JobAdvetisementService()
+    const jobAdvetisementService = new JobAdvetisementService()
     jobAdvetisementService.getAllActiveTrue().then(result => setjobAdvertisement(result.data.data))
 
   }, [])
 
-  const passiveJobAdvertisement = async(jobAdvertisementId)=>{
-    try{
+  const passiveJobAdvertisement = async (jobAdvertisementId) => {
+    try {
       const jobAdvertisementService = new JobAdvetisementService();
-  
+
       await jobAdvertisementService.jobAdvertisementPassive(jobAdvertisementId)
-      jobAdvertisementService.getAllActiveTrue().then(result=> setjobAdvertisement(result.data.data))
-  
-    }catch(error){
+      jobAdvertisementService.getAllActiveTrue().then(result => setjobAdvertisement(result.data.data))
+
+    } catch (error) {
       console.error("ilan pasif hale getirme işlemi başarısız".error)
     }
-   }
+  }
+  const orderOptions = [
+    { key: 'Sıralama Seçiniz', value: '' },
+    { key: 'Küçükden Büyüğe', value: '1' },
+    { key: 'Büyükten Küçüge', value: '2' },
+    { key: '', value: '3' }
+
+    
+  ]
+  const initialValues = {
+
+    order: ''
+  }
+  const validationSchema = Yup.object({
+    jobSeekerId: Yup.string().required('Required')
+  });
 
 
   return (
     <div  >
+      <Formik
+        initialValues={initialValues}
+        validationshema={validationSchema}
+        onSubmit={values => console.log(values)}
+      //sırlama secenekleri eklenecek 
+      >
+        {(formik) => (
 
-      <Table unstackable responsive celled >
+
+          <Form >
+
+            <div  className="right-aligned-select"  >
+
+               <FormikControl 
+              control='select'
+              type='order'
+              label='Sırala'
+              name='order'
+              options={orderOptions}
+
+
+            />
+            </div>
+           
+
+          </Form>
+        )}
+      </Formik>
+
+
+
+      <Table unstackable celled >
         <TableHeader>
           <TableRow>
             <TableHeaderCell>İş İlanı No</TableHeaderCell>
@@ -51,10 +101,8 @@ export default function AllActiveJobAdvertisemenstList() {
 
         <TableBody>
           {
-            jobAdvertisements.map((jobAdvertisement) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-              <TableRow key={jobAdvertisement.jobAdvertisement_Id}>
+            jobAdvertisements.map((jobAdvertisement) => ( 
+              <TableRow key={jobAdvertisement.jobAdvertisementId}>
                 <TableCell>{jobAdvertisement.jobAdvertisementId}</TableCell>
                 <TableCell>{jobAdvertisement.employerName}</TableCell>
                 <TableCell>{jobAdvertisement.releaseDate}</TableCell>
@@ -67,8 +115,8 @@ export default function AllActiveJobAdvertisemenstList() {
                 <TableCell>{jobAdvertisement.numberOfPositions}</TableCell>
                 <TableCell>{jobAdvertisement.minSalary}</TableCell>
                 <TableCell>{jobAdvertisement.maxSalary}</TableCell>
-                <TableCell>{jobAdvertisement.active ? 'Aktif':'Pasif'}</TableCell>
-                <TableCell><Button onClick={()=>passiveJobAdvertisement(jobAdvertisement.jobAdvertisementId)}>Pasif Yap</Button></TableCell>
+                <TableCell>{jobAdvertisement.active ? 'Aktif' : 'Pasif'}</TableCell>
+                <TableCell><Button onClick={() => passiveJobAdvertisement(jobAdvertisement.jobAdvertisementId)}>Pasif Yap</Button></TableCell>
 
 
               </TableRow>

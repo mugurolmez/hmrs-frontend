@@ -31,7 +31,8 @@ function FormicContainer() {
         selectOption: '',
         radioOption: '',
         checkboxOption: '',
-        birthDate: null
+        birthDate: null,
+        file: null
 
     }
     const validationSchema = Yup.object({
@@ -40,7 +41,8 @@ function FormicContainer() {
         selectOption: Yup.string().required('Required'),
         radioOption: Yup.string().required('Required'),
         checkboxOption: Yup.array().required('Required'),
-        birthDate: Yup.date().required('Required')
+        birthDate: Yup.date().required('Required'),
+        file: Yup.mixed().required('Required')
 
 
     })
@@ -73,9 +75,9 @@ function FormicContainer() {
                     label='Select a topic'
                     name='selectOption'
                     options={dropdownOptions}
-                >
+                />
 
-                </FormikControl>
+             
 
                 <FormikControl
                     control='radio'
@@ -96,6 +98,12 @@ function FormicContainer() {
                     control='date'
                     label='pick a  date'
                     name='birthDate'
+                > </FormikControl>
+
+                <FormikControl
+                    control='imageInput'
+                    label='Upload an image'
+                    name='file'
                 > </FormikControl>
 
 

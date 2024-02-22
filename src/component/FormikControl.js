@@ -7,6 +7,7 @@ import RadioButtons from './RadioButtons';
 import CheckboxGroup from './CheckboxGroup';
 import DatePicker from './DatePicker';
 import ChakraInput from './ChakraInput';
+import ImageInput from './ImageInput';
 
 
 function FormikControl(props) {
@@ -26,7 +27,9 @@ function FormikControl(props) {
         case 'date':
             return <DatePicker {...rest} />
         case 'chakrainput':
-            return <ChakraInput{...rest} />
+            return <ChakraInput {...rest} />
+        case 'imageInput':
+            return < ImageInput {...rest } />
         default:
             return null;
     }

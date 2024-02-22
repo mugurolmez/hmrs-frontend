@@ -8,9 +8,9 @@ addHrmsPerson(hmrsPersonData){
    
     return axios.post("http://localhost:8080/api/hrmsPersons/add",hmrsPersonData)
 }
-veifyEmployer(verifyEmployerData){
+verifyEmployer(verifyEmployerData){
    
-    return axios.post("http://localhost:8080/api/hrmsPersons/verify-employer/",verifyEmployerData)
+    return axios.put("http://localhost:8080/api/hrmsPersons/verify-employer",verifyEmployerData)
 }
 
 }

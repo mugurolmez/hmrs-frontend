@@ -1,35 +1,37 @@
 import React from 'react'
-import { Formik, Form } from 'formik'
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup'
-import FormikControl from '../component/FormikControl'
-import UserService from '../services/userService'
-import { useNavigate } from 'react-router-dom'
+import FormikControl from '../component/FormikControl';
+import TemporaryEmployerService from '../services/temporaryEmployerService';
 
-
-
-function AddUserForm() {
-
+function AddTemporaryEmployerForm() {
   const initialValues = {
     email: '',
-    password: ''
+    password: '',
+    corporateName: '',
+    webSite: '',
+    phoneNumber: ''
+
   }
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email format')
-      .required('Required'),
+
+    email: Yup.string().email().required('Required'),
     password: Yup.string().required('Required'),
+    corporateName: Yup.string().required('Required'),
+    webSite: Yup.string().required('Required'),
+    phoneNumber: Yup.string().required('Required')
 
   })
-  const navigate = new useNavigate()
+
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const userService = new UserService()
-      const response = await userService.addUser(values)
+      const temporaryEmployerService = new TemporaryEmployerService()
+      const response = await temporaryEmployerService.addTemporaryEployer(values)
       console.log('api yanıtı', response.data)
       console.log("kayıt başarılı")
-      navigate("/userlist")
+
     } catch (error) {
       console.error('api hatası:', error)
       if (error.response) {
@@ -46,11 +48,11 @@ function AddUserForm() {
 
   }
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       await handleSubmit(values, { setSubmitting })
       console.log('Form Data', values)
-
+      resetForm()
 
     } catch (error) {
       console.error('Form gonderme hatası', error)
@@ -77,9 +79,27 @@ function AddUserForm() {
               />
               <FormikControl
                 control='input'
-                label='Parola'
                 type='password'
+                label='password'
                 name='password'
+              />  
+              <FormikControl
+                control='input'
+                type='corporateName'
+                label='corporateName'
+                name='corporateName'
+              /> 
+               <FormikControl
+                control='input'
+                type='webSite'
+                label='webSite'
+                name='webSite'
+              />  
+              <FormikControl
+                control='input'
+                type='phoneNumber'
+                label='phoneNumber'
+                name='phoneNumber'
               />
               <button type='submit' disabled={!formik.isValid}>
                 Kayıt Ol
@@ -89,8 +109,7 @@ function AddUserForm() {
         }}
       </Formik>
     </div>
-
   )
 }
 
-export default AddUserForm
+export default AddTemporaryEmployerForm

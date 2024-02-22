@@ -9,8 +9,8 @@ addJobAdvertisement(jobAdvertisementData){
    
     return axios.post("http://localhost:8080/api/JobAdvertisements/add",jobAdvertisementData)
 }
-getAllActiveTrueDESC(){
-    return axios.get("http://localhost:8080/api/JobAdvertisements/getAllActiveTrueDESC")
+GetAllOrderByApplicationDeadlineDesc(){
+    return axios.get("http://localhost:8080/api/JobAdvertisements/findAllByIsActiveTrueOrderByApplicationDeadlineDesc")
 }
 getAllActiveTrueASC(){
     return axios.get("http://localhost:8080/api/JobAdvertisements/getAllActiveTrueASC")

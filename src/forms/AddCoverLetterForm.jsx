@@ -2,34 +2,32 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import UserService from '../services/userService'
-import { useNavigate } from 'react-router-dom'
+import CoverLetterService from '../services/coverLetterService'
 
 
 
-function AddUserForm() {
+function AddCCoverLetterFrom() {
 
   const initialValues = {
-    email: '',
-    password: ''
+    jobSeekerId: '',
+    coverLetter: ''
+
+
   }
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email format')
-      .required('Required'),
-    password: Yup.string().required('Required'),
-
+    jobSeekerId: Yup.string().required('Required'),
+    coverLetter: Yup.string().required('Required')
   })
-  const navigate = new useNavigate()
+
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const userService = new UserService()
-      const response = await userService.addUser(values)
+      const coverLetterService = new CoverLetterService()
+      const response = await coverLetterService.AddCoverLetter(values)
       console.log('api yanıtı', response.data)
       console.log("kayıt başarılı")
-      navigate("/userlist")
+
     } catch (error) {
       console.error('api hatası:', error)
       if (error.response) {
@@ -46,11 +44,11 @@ function AddUserForm() {
 
   }
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       await handleSubmit(values, { setSubmitting })
       console.log('Form Data', values)
-
+      resetForm()
 
     } catch (error) {
       console.error('Form gonderme hatası', error)
@@ -71,18 +69,19 @@ function AddUserForm() {
             <Form>
               <FormikControl
                 control='input'
-                type='email'
-                label='Email'
-                name='email'
+                type='jobSeekerId'
+                label='İş Arayan ID'
+                name='jobSeekerId'
               />
-              <FormikControl
+               <FormikControl
                 control='input'
-                label='Parola'
-                type='password'
-                name='password'
+                type='coverLetter'
+                label='Ön Yazı'
+                name='coverLetter'
               />
+              
               <button type='submit' disabled={!formik.isValid}>
-                Kayıt Ol
+                Ekle
               </button>
             </Form>
           )
@@ -93,4 +92,4 @@ function AddUserForm() {
   )
 }
 
-export default AddUserForm
+export default AddCCoverLetterFrom

@@ -2,34 +2,38 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import UserService from '../services/userService'
-import { useNavigate } from 'react-router-dom'
+import JobSeekerService from '../services/jobSeekerService'
 
 
 
-function AddUserForm() {
+function AddJobSeekerForm() {
 
   const initialValues = {
     email: '',
-    password: ''
+    password: '',
+    name: '',
+    lastName:'',
+    birthDate: '',
+    nationalityNumber: ''
   }
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email format')
-      .required('Required'),
+    email: Yup.string().email('Invalid email format').required('Required'),
     password: Yup.string().required('Required'),
+    name: Yup.string().required('Required'),
+    lastName:Yup.string().required('Required'),
+    birthDate: Yup.string().required('Required'),
+    nationalityNumber: Yup.string().required('Required').min(11).max(11)
 
   })
-  const navigate = new useNavigate()
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const userService = new UserService()
-      const response = await userService.addUser(values)
+      const jobSeekerService = new JobSeekerService()
+      const response = await jobSeekerService.AddJobSeeker(values)
       console.log('api yanıtı', response.data)
       console.log("kayıt başarılı")
-      navigate("/userlist")
+
     } catch (error) {
       console.error('api hatası:', error)
       if (error.response) {
@@ -46,10 +50,11 @@ function AddUserForm() {
 
   }
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting,resetForm }) => {
     try {
       await handleSubmit(values, { setSubmitting })
       console.log('Form Data', values)
+      resetForm()
 
 
     } catch (error) {
@@ -81,6 +86,30 @@ function AddUserForm() {
                 type='password'
                 name='password'
               />
+                <FormikControl
+                control='input'
+                type='name'
+                label='Ad'
+                name='name'
+              />
+              <FormikControl
+                control='input'
+                label='Soyad'
+                type='lastName'
+                name='lastName'
+              />
+                <FormikControl
+                control='date'
+                type='birthDate'
+                label='Doğum Yılı'
+                name='birthDate'
+              />
+              <FormikControl
+                control='input'
+                label='Tc Kimlik No'
+                type='nationalityNumber'
+                name='nationalityNumber'
+              />
               <button type='submit' disabled={!formik.isValid}>
                 Kayıt Ol
               </button>
@@ -93,4 +122,4 @@ function AddUserForm() {
   )
 }
 
-export default AddUserForm
+export default AddJobSeekerForm

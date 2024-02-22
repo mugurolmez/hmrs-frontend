@@ -12,19 +12,20 @@ export default function ImageGetAllImages() {
     imageService.imagesGetAll().then(result => setImages(result.data.data));
   }, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
 
-    let deleteButton= (id)=>{
+
+     let    deleteButton=async (id)=>{
         console.log(id)
         let imageService=new ImageService()
-         imageService.oneImageDelete(id)
+        await imageService.oneImageDelete(id)
+         await imageService.imagesGetAll().then(result => setImages(result.data.data));
+         
         console.log("delete buton tıklandı")
-        
         console.log()
     }
   
 
   
   return (
-
 
     <Grid >
 

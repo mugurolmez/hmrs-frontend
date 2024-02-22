@@ -1,10 +1,10 @@
 import axios from "axios"
 
-export default class WorkExperinceService{
-getWorkExperince(jobSeekerId){
-    return axios.get(`http://localhost:8080/api/workExperinces/${jobSeekerId}`);
+export default class WorkExperienceService{
+async getWorkExperiences(jobSeekerId){
+    return await axios.get(`http://localhost:8080/api/workExperiences/${jobSeekerId}`);
 }
-addWorkExperince(workExperinceData){
-    return axios.post("http://localhost:8080/api/workExperinces/add",workExperinceData)
+async addWorkExperience(workExperienceData){
+    return await axios.post("http://localhost:8080/api/workExperiences/add",workExperienceData)
 }
 }

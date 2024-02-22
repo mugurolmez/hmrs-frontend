@@ -2,34 +2,31 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import UserService from '../services/userService'
-import { useNavigate } from 'react-router-dom'
+import WorkTypeService from '../services/workTypeService'
 
 
 
-function AddUserForm() {
+function AddWorkTypeFrom() {
 
   const initialValues = {
-    email: '',
-    password: ''
+    workTypeName: '',
+   
   }
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email format')
-      .required('Required'),
-    password: Yup.string().required('Required'),
+   
+      workTypeName: Yup.string().required('Required')
 
   })
-  const navigate = new useNavigate()
+
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const userService = new UserService()
-      const response = await userService.addUser(values)
+      const workTypeService = new WorkTypeService()
+      const response = await workTypeService.AddWorkType(values)
       console.log('api yanıtı', response.data)
       console.log("kayıt başarılı")
-      navigate("/userlist")
+      
     } catch (error) {
       console.error('api hatası:', error)
       if (error.response) {
@@ -46,11 +43,11 @@ function AddUserForm() {
 
   }
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting,resetForm }) => {
     try {
       await handleSubmit(values, { setSubmitting })
       console.log('Form Data', values)
-
+        resetForm()
 
     } catch (error) {
       console.error('Form gonderme hatası', error)
@@ -71,18 +68,13 @@ function AddUserForm() {
             <Form>
               <FormikControl
                 control='input'
-                type='email'
-                label='Email'
-                name='email'
+                type='workTypeName'
+                label='Çalışma Tipi'
+                name='workTypeName'
               />
-              <FormikControl
-                control='input'
-                label='Parola'
-                type='password'
-                name='password'
-              />
+             
               <button type='submit' disabled={!formik.isValid}>
-                Kayıt Ol
+                Ekle
               </button>
             </Form>
           )
@@ -93,4 +85,4 @@ function AddUserForm() {
   )
 }
 
-export default AddUserForm
+export default AddWorkTypeFrom

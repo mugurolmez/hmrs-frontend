@@ -1,15 +1,14 @@
 import axios from "axios"
 
 export default class JobDescriptionService {
-    addJobDescriptionService(jobDescriptionData) {
-
+    addJobDescription(jobDescriptionData) {
         return axios.post("http://localhost:8080/api/jobDescriptions/add", jobDescriptionData)
     }
-    getJobDescritions() {
+    getAllJobDescritions() {
         return axios.get("http://localhost:8080/api/jobDescriptions/getall");
     }
-    getJobDescritionJobSeekerId(jobSeekerId) {
-        return axios.get(`http://localhost:8080/api/jobDescriptions/${jobSeekerId}`);
+    getJobDescriptionById(jobDescriptionId) {
+        return axios.get(`http://localhost:8080/api/jobDescriptions/${jobDescriptionId}`);
     }
 
 }
