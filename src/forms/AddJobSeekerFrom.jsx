@@ -2,17 +2,20 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import JobSeekerService from '../services/jobSeekerService'
+import { useDispatch } from 'react-redux'
+import { addJobSeeker } from '../store/thunks/jobSeekerThunks'
 
 
 
 function AddJobSeekerForm() {
 
+  const dispatch = useDispatch()
+
   const initialValues = {
     email: '',
     password: '',
     name: '',
-    lastName:'',
+    lastName: '',
     birthDate: '',
     nationalityNumber: ''
   }
@@ -21,46 +24,16 @@ function AddJobSeekerForm() {
     email: Yup.string().email('Invalid email format').required('Required'),
     password: Yup.string().required('Required'),
     name: Yup.string().required('Required'),
-    lastName:Yup.string().required('Required'),
+    lastName: Yup.string().required('Required'),
     birthDate: Yup.string().required('Required'),
     nationalityNumber: Yup.string().required('Required').min(11).max(11)
 
   })
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const jobSeekerService = new JobSeekerService()
-      const response = await jobSeekerService.AddJobSeeker(values)
-      console.log('api yanıtı', response.data)
-      console.log("kayıt başarılı")
-
-    } catch (error) {
-      console.error('api hatası:', error)
-      if (error.response) {
-        console.log('Server hatası', error.response.data)
-      } else if (error.request) {
-        console.log('istek hatası', error.request)
-      } else {
-        console.log("genel hata", error.message)
-      }
-    } finally {
-      setSubmitting(false)
-    }
-
-
-  }
-
-  const onSubmit = async (values, { setSubmitting,resetForm }) => {
-    try {
-      await handleSubmit(values, { setSubmitting })
-      console.log('Form Data', values)
-      resetForm()
-
-
-    } catch (error) {
-      console.error('Form gonderme hatası', error)
-    }
-
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
+    dispatch(addJobSeeker(values))
+    resetForm()
+    setSubmitting(false)
   }
 
   return (
@@ -70,7 +43,6 @@ function AddJobSeekerForm() {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-
         {formik => {
           return (
             <Form>
@@ -86,7 +58,7 @@ function AddJobSeekerForm() {
                 type='password'
                 name='password'
               />
-                <FormikControl
+              <FormikControl
                 control='input'
                 type='name'
                 label='Ad'
@@ -98,7 +70,7 @@ function AddJobSeekerForm() {
                 type='lastName'
                 name='lastName'
               />
-                <FormikControl
+              <FormikControl
                 control='date'
                 type='birthDate'
                 label='Doğum Yılı'

@@ -19,16 +19,13 @@ function AddImageForm() {
 
     })
 
-
-
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-
         try {
 
             const formData = new FormData();
             formData.append('jobSeekerId', values.jobSeekerId);
             formData.append('multipartFile', values.image);
-
+            
             const response = await axios.post('http://localhost:8080/image/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

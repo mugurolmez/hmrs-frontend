@@ -1,66 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import JobAdvetisementService from '../services/jobAdvertisementService'
-import CitiesService from '../services/citiesService'
-import JobDescriptionService from '../services/jobDescriptionService'
-import WorkTypeService from '../services/workTypeService'
-import WorkTimeService from '../services/workTimeService'
-
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCities } from '../store/thunks/cityThunks'
+import { fetchJobDescriptions } from '../store/thunks/jobDescriptionThunks'
+import { fetchWorkTypes } from '../store/thunks/workTypeThunks'
+import { fetchWorkTimes } from '../store/thunks/workTimeThunks'
+import { AddJobAdvertisement } from '../store/thunks/jobAdvertisementThunks'
 
 function AddJobAdvertisementForm() {
-    const [cities, setCities] = useState([])
-    const [jobDescriptions, setJobDescriptions] = useState([])
-    const [workTypes, setWorkTypes] = useState([])
-    const [workTimes, setWorkTimes] = useState([])
+    const dispatch = useDispatch()
+    const cityData = useSelector((state) => state.city.cityItems)
+    const jobDescriptionData = useSelector((state) => state.jobDescription.jobDescriptionItems)
+    const workTypeData = useSelector((state) => state.workType.workTypeItems)
+    const workTimeData = useSelector((state) => state.workTime.workTimeItems)
 
     useEffect(() => {
-        let cityService = new CitiesService();
-        cityService.getCities().then(result => setCities(result.data.data));
-    }, []);
-
-    useEffect(() => {
-        let jobDescriptionService = new JobDescriptionService();
-        jobDescriptionService.getAllJobDescritions().then(result => setJobDescriptions(result.data.data));
-    }, []);
-
-    useEffect(() => {
-        let workTypeService = new WorkTypeService();
-        workTypeService.getAllWorkType().then(result => setWorkTypes(result.data.data));
-    }, []);
-
-    useEffect(() => {
-        let workTimeService = new WorkTimeService();
-        workTimeService.getAAllWorkTime().then(result => setWorkTimes(result.data.data));
-    }, []);
+        dispatch(fetchCities())
+        dispatch(fetchJobDescriptions())
+        dispatch(fetchWorkTypes())
+        dispatch(fetchWorkTimes())
+    }, [dispatch])
 
     const cityOptions = [
         { key: 'Şehir Seçiniz', value: '' },
-        ...cities.map((city) => ({
+        ...cityData.map((city) => ({
             key: city.cityName,
             value: city.id
         }))];
 
     const jobDescriptionOptions = [
         { key: 'İş Tanımı Seçiniz', value: '' },
-        ...jobDescriptions.map((jobDescription) => ({
+        ...jobDescriptionData.map((jobDescription) => ({
             key: jobDescription.jobDescriptionName,
             value: jobDescription.jobDescriptionId
         }))];
 
     const workTypeOptions = [
         { key: 'Çalışma Tipi Seçiniz', value: '' },
-        ...workTypes.map((workType) => ({
+        ...workTypeData.map((workType) => ({
             key: workType.workTypeName,
             value: workType.workTypeId
         }))];
 
     const workTimeOptions = [
         { key: 'Çalışma Zamanı Seçiniz', value: '' },
-        ...workTimes.map((workTime) => ({
+        ...workTimeData.map((workTime) => ({
             key: workTime.workTimeName,
             value: workTime.workTimeId
         }))];
@@ -79,7 +65,6 @@ function AddJobAdvertisementForm() {
     }
 
     const validationSchema = Yup.object({
-
         employerId: Yup.string().required('Required'),
         jobDescriptionFeatures: Yup.string().required('Required'),
         minSalary: Yup.string().required('Required'),
@@ -90,43 +75,12 @@ function AddJobAdvertisementForm() {
         cityId: Yup.string().required('Required'),
         workTypeId: Yup.string().required('Required'),
         workTimeId: Yup.string().required('Required')
-
     })
 
-    const handleSubmit = async (values, { setSubmitting }) => {
-        try {
-            const jobAdvertisementService = new JobAdvetisementService()
-            const response = await jobAdvertisementService.addJobAdvertisement(values)
-            console.log('api yanıtı', response.data)
-            console.log("kayıt başarılı")
-
-        } catch (error) {
-            console.error('api hatası:', error)
-            if (error.response) {
-                console.log('Server hatası', error.response.data)
-            } else if (error.request) {
-                console.log('istek hatası', error.request)
-            } else {
-                console.log("genel hata", error.message)
-            }
-        } finally {
-            setSubmitting(false)
-        }
-
-
-    }
-
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        try {
-            await handleSubmit(values, { setSubmitting })
-            console.log('Form Data', values)
-          
-
-
-        } catch (error) {
-            console.error('Form gonderme hatası', error)
-        }
-
+        dispatch(AddJobAdvertisement(values))
+        setSubmitting(false)
+        resetForm()
     }
 
     return (
@@ -136,7 +90,6 @@ function AddJobAdvertisementForm() {
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
             >
-
                 {formik => {
                     return (
                         <Form>
@@ -205,7 +158,6 @@ function AddJobAdvertisementForm() {
                                 name='workTimeId'
                                 options={workTimeOptions}
                             />
-
 
                             <button type='submit' disabled={!formik.isValid}>
                                 Kayıt Ol

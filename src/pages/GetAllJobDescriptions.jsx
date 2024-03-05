@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import JobDescriptionService from '../services/jobDescriptionService';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobDescriptions } from '../store/thunks/jobDescriptionThunks';
 
 
 export default function GetAllJobDescriptions() {
-  // Kullanıcıları depolamak için bir state kullanıyoruz.
-  const [jobDescriptions, setJobDescriptions] = useState([]);
+  const dispacth = useDispatch()
+  const jobDescriptions = useSelector((state) => state.jobDescription.jobDescriptionItems)
 
   useEffect(() => {
-    // Component yüklendiğinde yapılması gereken işlemler burada yer alır.
-
-    // userService.getUsers() ile kullanıcı verilerini çekiyoruz.
-    // then bloğunda gelen veriyi setUsers ile state'e atıyoruz.
-    let jobDescriptionService = new JobDescriptionService();
-    jobDescriptionService.getAllJobDescritions().then(result => setJobDescriptions(result.data.data));
-  }, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
+    
+    dispacth(fetchJobDescriptions());
+  }, [dispacth]);
 
   return (
     <div>
@@ -23,23 +21,22 @@ export default function GetAllJobDescriptions() {
           <TableRow>
             <TableHeaderCell>İş Tanımı ID</TableHeaderCell>
             <TableHeaderCell>İş Tanımı</TableHeaderCell>
-            
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {
+          {jobDescriptions && jobDescriptions.length > 0 &&
             jobDescriptions.map((jobDescription) => (
-          // Her bir kullanıcı için TableRow oluşturuyoruz.
-          // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-          <TableRow key={jobDescription.jobDescriptionId}>
-            <TableCell>{jobDescription.jobDescriptionId}</TableCell>
-            <TableCell>{jobDescription.jobDescriptionName}</TableCell>
-   
-          </TableRow>
-          ))
+              // Her bir kullanıcı için TableRow oluşturuyoruz.
+              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+              <TableRow key={jobDescription.jobDescriptionId}>
+                <TableCell>{jobDescription.jobDescriptionId}</TableCell>
+                <TableCell>{jobDescription.jobDescriptionName}</TableCell>
 
-            }
+              </TableRow>
+            ))
+
+          }
         </TableBody>
 
         <TableFooter>

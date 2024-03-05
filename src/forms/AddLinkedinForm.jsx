@@ -2,17 +2,17 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import LinkedinService from '../services/linkedinService'
+import { useDispatch } from 'react-redux'
+import { addLinkedin } from '../store/thunks/linkedinThunks'
 
 
 
 function AddLinkedinFrom() {
+  const dispatch = useDispatch()
 
   const initialValues = {
     jobSeekerId: '',
     linkedinAddress: ''
-
-
   }
 
   const validationSchema = Yup.object({
@@ -20,40 +20,10 @@ function AddLinkedinFrom() {
     linkedinAddress: Yup.string().required('Required')
   })
 
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const linkedinService = new LinkedinService()
-      const response = await linkedinService.AddLinkedin(values)
-      console.log('api yanıtı', response.data)
-      console.log("kayıt başarılı")
-
-    } catch (error) {
-      console.error('api hatası:', error)
-      if (error.response) {
-        console.log('Server hatası', error.response.data)
-      } else if (error.request) {
-        console.log('istek hatası', error.request)
-      } else {
-        console.log("genel hata", error.message)
-      }
-    } finally {
-      setSubmitting(false)
-    }
-
-
-  }
-
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      await handleSubmit(values, { setSubmitting })
-      console.log('Form Data', values)
-      resetForm()
-
-    } catch (error) {
-      console.error('Form gonderme hatası', error)
-    }
-
+    dispatch(addLinkedin(values))
+    setSubmitting(false)
+    resetForm()
   }
 
   return (
@@ -73,13 +43,13 @@ function AddLinkedinFrom() {
                 label='İş Arayan ID'
                 name='jobSeekerId'
               />
-               <FormikControl
+              <FormikControl
                 control='input'
                 type='linkedinAddress'
                 label='Linkedin'
                 name='linkedinAddress'
               />
-              
+
               <button type='submit' disabled={!formik.isValid}>
                 Ekle
               </button>

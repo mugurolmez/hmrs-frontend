@@ -1,36 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import CoverLetterService from '../services/coverLetterService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoverLetterByJobSeekerId } from '../store/thunks/coverLetterThunks';
 
 
 function GetCoverLetterByJobSeekerId() {
-  const [coverLetter, setCoverLetter] = useState({});
-  const [, setError] = useState('');
 
-  const fetchCoverLetter = async (jobSeekerId) => {
-    try {
-      const { data } = await new CoverLetterService().getCoverLetterByJobSeekerId(jobSeekerId);
-
-      if (data.data.length === 0) {
-        setError('Bulunamadı');
-      } else {
-        setCoverLetter(data.data);
-        setError('');
-      }
-    } catch (error) {
-      console.error('Framework getirme hatası:', error);
-      setCoverLetter([]);
-      setError('Framework Bilgisi bulunamadı');
-    }
-  };
+  const dispatch = useDispatch()
+  const { coverLetterItem } = useSelector(state => state.coverLetter);
 
   const handleChangeJobSeekerId = async (event, formik) => {
     const selectedId = event.target.value;
     formik.handleChange(event);
-    await fetchCoverLetter(selectedId);
+   dispatch(fetchCoverLetterByJobSeekerId(selectedId))
   };
 
   const initialValues = {
@@ -40,6 +25,13 @@ function GetCoverLetterByJobSeekerId() {
   const validationSchema = Yup.object({
     jobSeekerId: Yup.string().required('Required')
   });
+  const handleSubmit = (values, { setSubmitting }) => {
+
+
+    // Eğer bir submit işlemi yapmanız gerekiyorsa buraya ekleyebilirsiniz.
+    // Ancak burada şu an için bir işlem yapılmıyor gibi görünüyor.
+    setSubmitting(false);
+  };
 
 
   return (
@@ -47,7 +39,7 @@ function GetCoverLetterByJobSeekerId() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-       
+        onSubmit={handleSubmit}
       >
         {formik => (
           <Form>
@@ -62,25 +54,24 @@ function GetCoverLetterByJobSeekerId() {
         )}
       </Formik>
 
-      { 
+      {
         <Table celled>
           <TableHeader>
             <TableRow>
-              <TableHeaderCell>GitHub ID</TableHeaderCell>
-              <TableHeaderCell>Github Adres</TableHeaderCell>
-           
+              <TableHeaderCell>Ön Yazı ID</TableHeaderCell>
+              <TableHeaderCell>Ön Yazı</TableHeaderCell>
             </TableRow>
           </TableHeader>
 
-          <TableBody>
-            {
-              <TableRow key={coverLetter.id}>
-                <TableCell>{coverLetter.id}</TableCell>
-                <TableCell>{coverLetter.coverLetter}</TableCell>
-              
+
+          {coverLetterItem && coverLetterItem.id && (
+            <TableBody>
+              <TableRow key={coverLetterItem.id}>
+                <TableCell>{coverLetterItem.id}</TableCell>
+                <TableCell>{coverLetterItem.coverLetter}</TableCell>
               </TableRow>
-            }
-          </TableBody>
+            </TableBody>
+          )}
 
           <TableFooter>
             <TableRow>
@@ -107,4 +98,4 @@ function GetCoverLetterByJobSeekerId() {
 }
 
 export default GetCoverLetterByJobSeekerId
-;
+  ;

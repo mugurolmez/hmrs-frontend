@@ -11,8 +11,6 @@ function AddProgrammingLanguageForm() {
   const initialValues = {
     jobSeekerId: '',
     programmingName: '',
-   
-
   }
 
   const validationSchema = Yup.object({

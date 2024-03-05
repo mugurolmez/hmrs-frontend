@@ -14,7 +14,6 @@ function AddSchoolFrom() {
     schoolDepartment: '',
     schoolStartYear: '',
     schoolYearOfGraduation: ''
-
   }
 
   const validationSchema = Yup.object({
@@ -26,8 +25,7 @@ function AddSchoolFrom() {
 
 
   })
-
-
+  
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const schoolService = new SchoolService()

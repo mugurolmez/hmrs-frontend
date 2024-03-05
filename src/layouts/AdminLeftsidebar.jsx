@@ -74,6 +74,16 @@ function AdminLeftsidebar() {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
+
+        <Menu.Item>
+          <Dropdown item text='Çalışma Zamanı İşlemleri'>
+            <Dropdown.Menu>
+              <Dropdown.Item as={NavLink} to='/addworktimeform'>Çalışma Zamanı Ekleme Formu</Dropdown.Item>
+              <Dropdown.Item as={NavLink} to='/worktimegetalllist'>Çalışma Tipi Listesi</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
+
         <Menu.Item>
           <Dropdown item text='İş Tanımı İşlemleri'>
             <Dropdown.Menu>
@@ -84,8 +94,6 @@ function AdminLeftsidebar() {
           </Dropdown>
         </Menu.Item>
 
-      
-
         <Menu.Item>
           <Dropdown item text='İş Arayan İşlemleri'>
             <Dropdown.Menu>
@@ -94,6 +102,7 @@ function AdminLeftsidebar() {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
+
         <Menu.Item>
           <Dropdown item text='Resim İşlemleri'>
             <Dropdown.Menu>
@@ -111,6 +120,7 @@ function AdminLeftsidebar() {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
+
         <Menu.Item>
           <Dropdown item text='Okul İşlemleri'>
             <Dropdown.Menu>
@@ -146,6 +156,7 @@ function AdminLeftsidebar() {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
+
         <Menu.Item>
           <Dropdown item text='Github İşlemleri'>
             <Dropdown.Menu>

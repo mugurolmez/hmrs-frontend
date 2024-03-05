@@ -1,20 +1,28 @@
-import React, { useEffect,useState } from 'react'
-import JobSeekerService from '../services/jobSeekerService';
+import React, { useEffect } from 'react'
+
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobSeekers } from '../store/thunks/jobSeekerThunks';
+
 
 export default function JobSeekerList() {
 
-  const [jobSeekers, setJobSeekers] = useState([]);
+  const dispatch = useDispatch()
+  const jobSeekerData = useSelector((state) => state.jobSeeker.jobSeekerItems);
+
 
   useEffect(() => {
-    let jobSeekerService = new JobSeekerService();
-    jobSeekerService.getJobSeekers().then(result => setJobSeekers(result.data.data));}, []);
-   
-    return (
+    dispatch(fetchJobSeekers())
+  }, [dispatch]);
 
-      <div>
-       
-       <Table celled>
+
+  
+
+  return (
+
+    <div>
+
+      <Table celled>
         <TableHeader>
           <TableRow>
             <TableHeaderCell>Kullanıcı Id</TableHeaderCell>
@@ -29,24 +37,20 @@ export default function JobSeekerList() {
         </TableHeader>
 
         <TableBody>
-          {
-            jobSeekers.map((jobSeeker) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-              <TableRow key={jobSeeker.jobSeekerId}>
-                <TableCell>{jobSeeker.userId}</TableCell>
-                <TableCell>{jobSeeker.personId}</TableCell>
-                <TableCell>{jobSeeker.jobSeekerId}</TableCell>
-                <TableCell>{jobSeeker.email}</TableCell>
-                <TableCell>{jobSeeker.nationalityNumber}</TableCell>
-                <TableCell>{jobSeeker.name}</TableCell>
-                <TableCell>{jobSeeker.lastName}</TableCell>
-                <TableCell>{jobSeeker.birthDate}</TableCell>
-              </TableRow>
-            ))
-
-          }
+          {jobSeekerData.map((jobSeeker) => (
+            <TableRow key={jobSeeker.jobSeekerId}>
+              <TableCell>{jobSeeker.userId}</TableCell>
+              <TableCell>{jobSeeker.personId}</TableCell>
+              <TableCell>{jobSeeker.jobSeekerId}</TableCell>
+              <TableCell>{jobSeeker.email}</TableCell>
+              <TableCell>{jobSeeker.nationalityNumber}</TableCell>
+              <TableCell>{jobSeeker.name}</TableCell>
+              <TableCell>{jobSeeker.lastName}</TableCell>
+              <TableCell>{jobSeeker.birthDate}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
+
 
         <TableFooter>
           <TableRow>
@@ -68,8 +72,8 @@ export default function JobSeekerList() {
         </TableFooter>
       </Table>
 
-          
-      </div>
-    )
+
+    </div>
+  )
 
 }

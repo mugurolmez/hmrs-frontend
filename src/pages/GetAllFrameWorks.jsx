@@ -6,6 +6,7 @@ import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
 const FrameworkList = () => {
+  
   const [programmingLanguages, setProgrammingLanguages] = useState([]);
   const [, setError] = useState('');
 
@@ -70,7 +71,7 @@ const FrameworkList = () => {
       <Table celled structured>
         <TableHeader>
           <TableRow>
-            <TableHeaderCell textAlign='center'>Languages</TableHeaderCell>
+            <TableHeaderCell >Languages</TableHeaderCell>
             {programmingLanguages.map((language, index) => (
               <TableHeaderCell key={index}>{language.programmingLanguageName}</TableHeaderCell>
             ))}
@@ -79,9 +80,9 @@ const FrameworkList = () => {
 
         <TableBody>
           <TableRow>
-            <TableCell textAlign='center'>Frameworks</TableCell>
+            <TableCell >Frameworks</TableCell>
             {programmingLanguages.map((language, index) => (
-              <TableCell textAlign='top' key={index}>
+              <TableCell key={index}>
                 {language.frameWorks.map((framework, subIndex) => (
                   <div key={subIndex}>{framework.frameworkName}</div>
                 ))}

@@ -37,12 +37,13 @@ import GetAllJobDescriptions from '../pages/GetAllJobDescriptions'
 import AddHrmsPersonForm from '../forms/AddHrmsPersonForm'
 import AddGithubFrom from '../forms/AddGithubForm'
 import GetGithubByJobSeekerId from '../pages/GetGithubByJobSeekerId'
-import AddFrameworkForm from '../forms/AddFramework'
+
 import GetAllFrameWorks from '../pages/GetAllFrameWorks'
-import AddCCoverLetterFrom from '../forms/AddCoverLetterForm'
 import GetCoverLetterByJobSeekerId from '../pages/GetCovverLetterByJobSeekerId'
 import VerifyEmployerForm from '../forms/VerifyEmployerForm'
 import AddJobAdvertisementForm from '../forms/AddJobAdvertisementForm'
+import AddCoverLetterFrom from '../forms/AddCoverLetterForm'
+import AddFrameworkForm from '../forms/AddFrameworkForm'
 
 
 export default function Dashboard() {
@@ -60,7 +61,7 @@ export default function Dashboard() {
             <Route path="/employerList" Component={EmployerList} />
             <Route path="/imageList" Component={ImagesList} />
             <Route path="/temporaryEmployerList" Component={TemporaryEmployerList} />
-            <Route path="/jobDescriptionsList" Component={JobSeekerList} />
+            <Route path="/getalljobdescriptions" Component={GetAllJobDescriptions} />
             <Route path="/allactivejobAdvertisementsList" Component={AllActiveJobAdvertisemenstList} />
             <Route path="/allpassivejobAdvertisementsList" Component={AllPassiveJobAdvertisemenstList} />
             <Route path="/imagegetallimages" Component={ImageGetAllImages} />
@@ -90,7 +91,7 @@ export default function Dashboard() {
             <Route path='/getgithubbyjobseekerid' Component={GetGithubByJobSeekerId}/>
             <Route path='/addframeworkform' Component={AddFrameworkForm}/>
             <Route path='/getallframeworks' Component={GetAllFrameWorks}/>
-            <Route path='/addcoverletterform' Component={AddCCoverLetterFrom}/>
+            <Route path='/addcoverletterform' Component={AddCoverLetterFrom}/>
             <Route path='/getcoverletterbyjobseekerid' Component={GetCoverLetterByJobSeekerId}/>
             <Route path='/verifyemployerform' Component={VerifyEmployerForm}/>
             <Route path='/addjobadvertisementform' Component={AddJobAdvertisementForm}/>

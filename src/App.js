@@ -3,7 +3,7 @@ import { Container, Grid, GridColumn, GridRow } from 'semantic-ui-react';
 import Dashboard from './layouts/Dashboard';
 import Navi from './layouts/Navi';
 import LeftSidebar from './layouts/LeftSidebar';
-import {Cloudinary} from "@cloudinary/url-gen";
+
 function App() {
   return (
 

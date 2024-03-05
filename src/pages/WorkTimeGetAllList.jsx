@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import WorkTimeService from '../services/workTimeService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWorkTimes } from '../store/thunks/workTimeThunks';
 
 
 function WorkTimeGetAllList() {
-    const [workTimes, setWorkTimes] = useState([]);
+   const dispatch=useDispatch()
+    const workTimesData=useSelector((state)=>state.workTime.workTimeItems)
+
 
     useEffect(() => {
-
-        let workTimeService = new WorkTimeService();
-        workTimeService.getAAllWorkTime().then(result => setWorkTimes(result.data.data));
-    }, []);
+        dispatch(fetchWorkTimes())
+    
+    }, [dispatch]);
 
 
     return (
@@ -26,7 +28,7 @@ function WorkTimeGetAllList() {
                 </TableHeader>
                 <TableBody>
                     {
-                        workTimes.map((workTime) => (
+                        workTimesData.map((workTime) => (
                             <TableRow key={workTime.workTimeId}>
                                 <TableCell>{workTime.workTimeId}</TableCell>
                                 <TableCell>{workTime.workTimeName}</TableCell>

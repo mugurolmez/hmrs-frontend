@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default class LinkedinService {
-    AddLinkedin(linkedinData) {
+    addLinkedin(linkedinData) {
         return axios.post("http://localhost:8080/api/linkedin-address/add", linkedinData)
     }
   

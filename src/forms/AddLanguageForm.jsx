@@ -2,13 +2,15 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import LanguageService from '../services/languageService'
+import { useDispatch } from 'react-redux'
+import { addLanguage } from '../store/thunks/languageThunks'
 
 
 
 function AddLanguageForm() {
-    
-    const radioOptions = [
+
+    const dispatch = useDispatch()
+    const languageOptions = [
         { key: '1', value: '1' },
         { key: '2', value: '2' },
         { key: '3', value: '3' },
@@ -20,8 +22,6 @@ function AddLanguageForm() {
         jobSeekerId: '',
         languageName: '',
         languageLevel: ''
-
-
     }
 
     const validationSchema = Yup.object({
@@ -30,40 +30,11 @@ function AddLanguageForm() {
         languageLevel: Yup.string().required('Required')
     })
 
-
-    const handleSubmit = async (values, { setSubmitting }) => {
-        try {
-            const languageService = new LanguageService()
-            const response = await languageService.AddLanguage(values)
-            console.log('api yanıtı', response.data)
-            console.log("kayıt başarılı")
-
-        } catch (error) {
-            console.error('api hatası:', error)
-            if (error.response) {
-                console.log('Server hatası', error.response.data)
-            } else if (error.request) {
-                console.log('istek hatası', error.request)
-            } else {
-                console.log("genel hata", error.message)
-            }
-        } finally {
-            setSubmitting(false)
-        }
-
-
-    }
-
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        try {
-            await handleSubmit(values, { setSubmitting })
-            console.log('Form Data', values)
-            resetForm()
 
-        } catch (error) {
-            console.error('Form gonderme hatası', error)
-        }
-
+        dispatch(addLanguage(values))
+        setSubmitting(false)
+        resetForm()
     }
 
     return (
@@ -89,12 +60,12 @@ function AddLanguageForm() {
                                 label='Dil'
                                 name='languageName'
                             />
-                              <FormikControl
+                            <FormikControl
                                 control='radio'
                                 type='languageLevel'
                                 label='Dil Seviyesi'
                                 name='languageLevel'
-                                options={radioOptions}
+                                options={languageOptions}
                             />
 
                             <button type='submit' disabled={!formik.isValid}>
