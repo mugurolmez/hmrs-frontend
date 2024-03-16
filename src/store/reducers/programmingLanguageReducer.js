@@ -1,30 +1,41 @@
-import { ADD_TO_PROGRAMINGLANGUAGE, SET_PROGRAMMING_LANGUAGES, SET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID } from "../actions/programmingLanguageActions";
+import { ADD_PROGRAMMING_LANGUAGE_ERROR, ADD_PROGRAMMING_LANGUAGE_SUCCESS, GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR, GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS } from "../actions/programmingLanguageActions";
+import { programmingLanguageItems } from "../initialValues/programmingLanguageItems";
 
 
 const initialState = {
 
-    programmingLanguagesItems: []
+    programmingLanguageItems: programmingLanguageItems,
+    error: null
 }
 
 export default function programmingLanguageReducer(state = initialState, action) {
     switch (action.type) {
-        case ADD_TO_PROGRAMINGLANGUAGE:
+        case ADD_PROGRAMMING_LANGUAGE_SUCCESS:
             return {
                 ...state,
-                programmingLanguagesItems: action.payload
+                programmingLanguageItems: [...state.programmingLanguageItems, action.payload],
+                error: null
             }
+        case ADD_PROGRAMMING_LANGUAGE_ERROR:
+            return {
+                ...state,
+                error: action.payload
+            }
+    
 
-        case SET_PROGRAMMING_LANGUAGES:
+        case GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS:
             return {
                 ...state,
-                programmingLanguagesItems: action.payload,
+                programmingLanguageItems: action.payload,
+                error:null
             }
+            case GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR:
+                return {
+                    ...state,
+                    programmingLanguageItems: null,
+                    error:action.payload
+                }
 
-        case SET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID:
-            return {
-                ...state,
-                programmingLanguagesItems: action.payload
-            }
         default:
             return state
 

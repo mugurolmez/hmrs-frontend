@@ -1,90 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table, Button } from 'semantic-ui-react';
-import JobAdvetisementService from '../services/jobAdvertisementService'
-import { Form, Formik } from 'formik';
-import FormikControl from '../component/FormikControl';
-import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllActiveJobAdvertisement } from '../store/thunks/jobAdvertisementThunks';
 
 
 export default function AllActiveJobAdvertisemenstList() {
-
-  const [jobAdvertisements, setjobAdvertisement] = useState([])
-
-
+  const dispacth = useDispatch()
+  const jobAdvertisements = useSelector((state) => state.jobAdvertisement.jobAdvertisementItems)
 
   useEffect(() => {
-    const jobAdvetisementService = new JobAdvetisementService()
-    jobAdvetisementService.getAllActiveTrue().then(result => setjobAdvertisement(result.data.data))
-
-  }, [])
-
-  const passiveJobAdvertisement = async (jobAdvertisementId) => {
-    try {
-      const jobAdvertisementService = new JobAdvetisementService();
-
-      await jobAdvertisementService.jobAdvertisementPassive(jobAdvertisementId)
-      jobAdvertisementService.getAllActiveTrue().then(result => setjobAdvertisement(result.data.data))
-
-    } catch (error) {
-      console.error("ilan pasif hale getirme işlemi başarısız".error)
-    }
-  }
-  const orderOptions = [
-    { key: 'Sıralama Seçiniz', value: '' },
-    { key: 'Küçükden Büyüğe', value: '1' },
-    { key: 'Büyükten Küçüge', value: '2' },
-    { key: '', value: '3' }
-
-    
-  ]
-  const initialValues = {
-
-    order: ''
-  }
-  const validationSchema = Yup.object({
-    jobSeekerId: Yup.string().required('Required')
-  });
-
+    dispacth(getAllActiveJobAdvertisement())
+  }, [dispacth])
 
   return (
     <div  >
-      <Formik
-        initialValues={initialValues}
-        validationshema={validationSchema}
-        onSubmit={values => console.log(values)}
-      //sırlama secenekleri eklenecek 
-      >
-        {(formik) => (
-
-
-          <Form >
-
-            <div  className="right-aligned-select"  >
-
-               <FormikControl 
-              control='select'
-              type='order'
-              label='Sırala'
-              name='order'
-              options={orderOptions}
-
-
-            />
-            </div>
-           
-
-          </Form>
-        )}
-      </Formik>
-
-
-
+      {jobAdvertisements.length === 0 ? (
+      <p>Aktif İş İlanı Yok.</p>
+    ) :
       <Table unstackable celled >
         <TableHeader>
           <TableRow>
             <TableHeaderCell>İş İlanı No</TableHeaderCell>
             <TableHeaderCell>İş Veren Adı</TableHeaderCell>
-            <TableHeaderCell>İlan Açılış Tarihi</TableHeaderCell>
+            <TableHeaderCell >İlan Açılış Tarihi </TableHeaderCell>
             <TableHeaderCell>İlan Bitiş Tarihi</TableHeaderCell>
             <TableHeaderCell>Şehir Adı</TableHeaderCell>
             <TableHeaderCell>İş Tanımı</TableHeaderCell>
@@ -98,10 +36,10 @@ export default function AllActiveJobAdvertisemenstList() {
             <TableHeaderCell></TableHeaderCell>
           </TableRow>
         </TableHeader>
-
         <TableBody>
           {
-            jobAdvertisements.map((jobAdvertisement) => ( 
+          
+            jobAdvertisements.map((jobAdvertisement) => (
               <TableRow key={jobAdvertisement.jobAdvertisementId}>
                 <TableCell>{jobAdvertisement.jobAdvertisementId}</TableCell>
                 <TableCell>{jobAdvertisement.employerName}</TableCell>
@@ -116,9 +54,7 @@ export default function AllActiveJobAdvertisemenstList() {
                 <TableCell>{jobAdvertisement.minSalary}</TableCell>
                 <TableCell>{jobAdvertisement.maxSalary}</TableCell>
                 <TableCell>{jobAdvertisement.active ? 'Aktif' : 'Pasif'}</TableCell>
-                <TableCell><Button onClick={() => passiveJobAdvertisement(jobAdvertisement.jobAdvertisementId)}>Pasif Yap</Button></TableCell>
-
-
+                <TableCell><Button>Pasif Yap</Button></TableCell>
               </TableRow>
             ))
 
@@ -145,7 +81,7 @@ export default function AllActiveJobAdvertisemenstList() {
         </TableFooter>
       </Table>
 
-
+}
     </div>
   )
 }

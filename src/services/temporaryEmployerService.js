@@ -4,7 +4,7 @@ export default class TemporaryEmployerService {
     addTemporaryEployer(temporaryEmployerData) {
         return axios.post("http://localhost:8080/api/temporaryEmployers/add", temporaryEmployerData)
     }
-    getTemporaryEployers() {
+    getAllTemporaryEployers() {
         return axios.get("http://localhost:8080/api/temporaryEmployers/getall");
     }
     getTemporaryEployersId(id) {

@@ -1,14 +1,14 @@
 import { Form, Formik } from 'formik'
 import React from 'react'
 import * as Yup from 'yup'
-
 import FormikControl from '../component/FormikControl'
-import WorkExperienceService from '../services/workExperinceService'
+import { useDispatch } from 'react-redux'
+import { addWorkExperience } from '../store/thunks/workExperienceThunks'
 
 function WorkExperinceAddForm() {
- 
-  
- 
+
+  const dispatch = useDispatch()
+
   const initialValues = {
     jobSeekerId: "",
     companyName: "",
@@ -16,49 +16,20 @@ function WorkExperinceAddForm() {
     workStartYear: "",
     yearOfDeparture: ""
   }
-  
-  const validationSchema = Yup.object( {
+
+  const validationSchema = Yup.object({
     jobSeekerId: Yup.string().required("Zorunlu Alan"),
     companyName: Yup.string().required("Zorunlu Alan"),
     jobPosition: Yup.string().required("Zorunlu Alan"),
     workStartYear: Yup.string().required("Zorunlu Alan"),
     yearOfDeparture: Yup.string()
-  
+
   })
-  
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const workExperienceService = new WorkExperienceService()
-      const response = await workExperienceService.addWorkExperience(values)
-      
-      console.log('api yanıtı', response.data)
-      console.log("kayıt başarılı")
 
-    } catch (error) {
-      console.error('api hatası:', error)
-      if (error.response) {
-        console.log('Server hatası', error.response.data)
-      } else if (error.request) {
-        console.log('istek hatası', error.request)
-      } else {
-        console.log("genel hata", error.message)
-      }
-    } finally {
-      setSubmitting(false) 
-    }
-  }
-
-  const onSubmit = async (values, { setSubmitting,resetForm }) => {
-    try {
-      await handleSubmit(values, { setSubmitting })
-    
-      console.log('Form Data', values)
-      resetForm()
-
-    } catch (error) {
-      console.error('Form gonderme hatası', error)
-    }
-
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
+    dispatch(addWorkExperience(values))
+    setSubmitting(false)
+    resetForm()
   }
 
 
@@ -79,7 +50,7 @@ function WorkExperinceAddForm() {
                 name='jobSeekerId'
 
               />
-             <FormikControl
+              <FormikControl
                 control='input'
                 type='companyName'
                 label='CompanyName'

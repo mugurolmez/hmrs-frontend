@@ -50,9 +50,10 @@ export default function HrmsPersonsList() {
           }
         </TableBody>
 
-        <TableFooter>
-          <TableRow>
-            <TableHeaderCell colSpan='3'>
+      
+        <TableFooter >
+          <TableRow >
+            <TableHeaderCell colSpan='9'>
               <Menu floated='right' pagination>
                 <MenuItem as='a' icon>
                   <Icon name='chevron left' />
@@ -69,7 +70,7 @@ export default function HrmsPersonsList() {
           </TableRow>
         </TableFooter>
       </Table>
-
+  
           
       </div>
     )

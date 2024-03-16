@@ -15,7 +15,7 @@ function GetCoverLetterByJobSeekerId() {
   const handleChangeJobSeekerId = async (event, formik) => {
     const selectedId = event.target.value;
     formik.handleChange(event);
-   dispatch(fetchCoverLetterByJobSeekerId(selectedId))
+    dispatch(fetchCoverLetterByJobSeekerId(selectedId))
   };
 
   const initialValues = {
@@ -25,11 +25,8 @@ function GetCoverLetterByJobSeekerId() {
   const validationSchema = Yup.object({
     jobSeekerId: Yup.string().required('Required')
   });
+  
   const handleSubmit = (values, { setSubmitting }) => {
-
-
-    // Eğer bir submit işlemi yapmanız gerekiyorsa buraya ekleyebilirsiniz.
-    // Ancak burada şu an için bir işlem yapılmıyor gibi görünüyor.
     setSubmitting(false);
   };
 

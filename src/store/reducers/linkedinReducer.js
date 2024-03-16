@@ -1,26 +1,27 @@
-import { ADD_LANGUAGE_SUCCES } from "../actions/languageActions";
-import { linkedin, linkedinItem } from "../initialValues/linkedinItem"
+
+import { ADD_LANGUAGE_ERROR } from "../actions/languageActions"
+import { ADD_LINKEDIN_SUCCESS } from "../actions/linkedinActions"
+import { linkedinItem } from "../initialValues/linkedinItem"
 
 
 
-initialValues = {
+const initialState = {
     linkedinItem: linkedinItem,
     error: null
 }
 
-export default function linkedinReducer(state = initialValues, action) {
+export default function linkedinReducer(state = initialState, action) {
     switch (action.type) {
-        case ADD_LANGUAGE_SUCCES:
+        case ADD_LINKEDIN_SUCCESS:
             return {
                 ...state,
                 linkedinItem: action.payload,
                 error: null
             }
-        case ADD_LANGUAGE_SUCCES:
+        case ADD_LANGUAGE_ERROR:
             return {
                 ...state,
-                linkedinItem: action.payload,
-                error: null
+                error: action.payload
             }
         default:
             return state

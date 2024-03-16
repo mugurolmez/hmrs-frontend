@@ -5,15 +5,13 @@ import { fetchWorkTimes } from '../store/thunks/workTimeThunks';
 
 
 function WorkTimeGetAllList() {
-   const dispatch=useDispatch()
-    const workTimesData=useSelector((state)=>state.workTime.workTimeItems)
-
+    const dispatch = useDispatch()
+    const workTimesData = useSelector((state) => state.workTime.workTimeItems)
 
     useEffect(() => {
         dispatch(fetchWorkTimes())
-    
-    }, [dispatch]);
 
+    }, [dispatch]);
 
     return (
         <div>
@@ -23,7 +21,6 @@ function WorkTimeGetAllList() {
                     <TableRow>
                         <TableHeaderCell>Çalışma Zamanı ID</TableHeaderCell>
                         <TableHeaderCell>Çalışma Zamanı</TableHeaderCell>
-                     
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -37,7 +34,6 @@ function WorkTimeGetAllList() {
 
                     }
                 </TableBody>
-
                 <TableFooter>
                     <TableRow>
                         <TableHeaderCell colSpan='3'>

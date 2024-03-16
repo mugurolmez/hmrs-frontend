@@ -3,11 +3,10 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
 import { useDispatch } from 'react-redux'
-import { AddJobDescriptions } from '../store/thunks/jobDescriptionThunks'
-
-
+import { addJobDescription } from '../store/thunks/jobDescriptionThunks'
 
 function AddJobDescriptionForm() {
+
   const dispatch = useDispatch()
 
   const initialValues = {
@@ -19,7 +18,7 @@ function AddJobDescriptionForm() {
   })
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    dispatch(AddJobDescriptions(values))
+    dispatch(addJobDescription(values))
     setSubmitting(false)
     resetForm()
   }

@@ -1,38 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableCell, TableBody, Table } from 'semantic-ui-react';
-import FrameworkService from '../services/frameworkService';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllFrameworkJobSeekerId } from '../store/thunks/frameworkThunks';
 
+//jobseeker ıd bos olunca sorgu atması engellenecek
+//ındex yerıne frameworkıd ile key olusturulacak
 const FrameworkList = () => {
-  
-  const [programmingLanguages, setProgrammingLanguages] = useState([]);
-  const [, setError] = useState('');
-
-  const fetchFrameworks = async (jobSeekerId) => {
-    try {
-      const { data } = await new FrameworkService().getFrameworkJobSeekerId(jobSeekerId);
-
-      if (data.data.length === 0) {
-        setError('Bulunamadı');
-      } else {
-        setProgrammingLanguages(data.data);
-        setError('');
-      }
-    } catch (error) {
-      console.error('Framework getirme hatası:', error);
-      setProgrammingLanguages([]);
-      setError('Framework Bilgisi bulunamadı');
-    }
-  };
+  const dispatch=useDispatch()
+  const frameWorks=useSelector((state)=>state.framework.frameworkItems)
 
   const handleChangeJobSeekerId = async (event, formik) => {
-    const selectedId = event.target.value;
+    const jobSeekerId = event.target.value;
     formik.handleChange(event);
-    await fetchFrameworks(selectedId);
-  };
+    dispatch(getAllFrameworkJobSeekerId(jobSeekerId));
 
+  };
+  
   const initialValues = {
     jobSeekerId: ''
   };
@@ -68,31 +54,36 @@ const FrameworkList = () => {
         )}
       </Formik>
 
+      {frameWorks && frameWorks.length > 0 && (
       <Table celled structured>
         <TableHeader>
           <TableRow>
-            <TableHeaderCell >Languages</TableHeaderCell>
-            {programmingLanguages.map((language, index) => (
-              <TableHeaderCell key={index}>{language.programmingLanguageName}</TableHeaderCell>
-            ))}
+            <TableHeaderCell>Programlama Dili</TableHeaderCell>
+            <TableHeaderCell>Frameworks</TableHeaderCell>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          <TableRow>
-            <TableCell >Frameworks</TableCell>
-            {programmingLanguages.map((language, index) => (
-              <TableCell key={index}>
-                {language.frameWorks.map((framework, subIndex) => (
-                  <div key={subIndex}>{framework.frameworkName}</div>
-                ))}
+          {frameWorks.map((language,index) => (
+            <TableRow key={index}>
+              <TableCell>{language.programmingLanguageName}</TableCell>
+              <TableCell>
+                {language.frameWorks && language.frameWorks.length > 0 ? (
+                  language.frameWorks.map((framework, subIndex) => (
+                    <div key={subIndex}>{framework.frameworkName}</div>
+                  ))
+                ) : (
+                  <div>Framework bilgisi yok</div>
+                )}
               </TableCell>
-            ))}
-          </TableRow>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
+      )}
+
     </div>
   );
-};
+                }
 
 export default FrameworkList;

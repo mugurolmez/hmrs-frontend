@@ -1,26 +1,28 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFramework } from '../store/thunks/frameworkThunks';
-import { fetchProgramminglanguagesByJobSeekerId } from '../store/thunks/programmingLanguagesThunks';
-
-
-
+import { getProgramminglanguagesByJobSeekerId } from '../store/thunks/programmingLanguagesThunks';
+//jobseeker veri girip silince sorgu atması engellenecek
 
 function AddFrameworkForm() {
 
   const dispatch = useDispatch();
-  const programmingLanguagesData = useSelector((state) => state.programmingLanguages.programmingLanguagesItems);
+  const programmingLanguagesData = useSelector((state) => state.programmingLanguage.programmingLanguageItems);
+  console.log("programming languages",programmingLanguagesData)
 
   const handleChangeJobSeekerId = async (event, formik) => {
-    const selectedId = event.target.value;
-    dispatch(fetchProgramminglanguagesByJobSeekerId(selectedId));
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event)
+
+    if (jobSeekerId.trim() !== '') {
+      dispatch(getProgramminglanguagesByJobSeekerId(jobSeekerId));
+    }
+
   };
 
-  useEffect(() => {
-  }, [programmingLanguagesData]);
 
   const dropdownOptions = [
     { key: 'Programlama Dili Seçiniz', value: '' },
@@ -44,11 +46,10 @@ function AddFrameworkForm() {
     frameworkName: Yup.string().required('Required'),
   });
 
-  const handleSubmit = async (values, { setSubmitting,resetForm }) => {
+  const onSubmit = async (values, { setSubmitting,resetForm }) => {
     dispatch(addFramework(values));
     setSubmitting(false);
     resetForm()
-    
   };
 
   return (
@@ -56,7 +57,7 @@ function AddFrameworkForm() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
       >
         {(formik) => (
           <Form>
@@ -76,6 +77,7 @@ function AddFrameworkForm() {
               name='programmingLanguageId'
               options={dropdownOptions}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
             <FormikControl
               control='input'

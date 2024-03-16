@@ -27,7 +27,7 @@ export const fetchCoverLetterByJobSeekerId=(jobSeekerId)=>{
             dispatch(getCoverLetterByJobSeekerId(response.data.data))
             console.log("API Yanıtı - Başarı:", response.data.success);
             console.log("API Yanıtı - Mesaj:", response.data.message);
-            console.log("API Response:", response);
+
 
         }catch(error){
             console.error('Ön yazı getirme hatası:',error)

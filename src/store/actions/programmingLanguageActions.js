@@ -1,16 +1,27 @@
-export const ADD_TO_PROGRAMINGLANGUAGE = "ADD_TO_PROGRAMINGLANGUAGE"
-export const SET_PROGRAMMING_LANGUAGES = 'SET_PROGRAMMING_LANGUAGES';
-export const SET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID='GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID'
+export const ADD_PROGRAMMING_LANGUAGE_SUCCESS = "ADD_PROGRAMMING_LANGUAGE_SUCCESS"
+export const ADD_PROGRAMMING_LANGUAGE_ERROR = "ADD_PROGRAMMING_LANGUAGE_ERROR"
+export const GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS='GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS'
+export const GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR='GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR'
 
 
-export const addProgrammingLanguage=(programmingLanguage)=>({
+
+export const addProgrammingLangugageSuccess=(data)=>({
     
-        type: ADD_TO_PROGRAMINGLANGUAGE,
-        payload: programmingLanguage,
+        type: ADD_PROGRAMMING_LANGUAGE_SUCCESS,
+        payload: data,
+})
+export const addProgrammingLangugageError=(error)=>({
+    
+        type: ADD_PROGRAMMING_LANGUAGE_ERROR,
+        payload: error,
 })
 
-export const setProgramminglanguagesByJobSeekerId=(jobSeekerId)=>({
-        type:SET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID,
-        payload:jobSeekerId
+export const getProgramminglanguagesByJobSeekerIdSuccess=(programmingLanguages)=>({
+        type:GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS,
+        payload:programmingLanguages
     })
 
+    export const getProgramminglanguagesByJobSeekerIdError=(error)=>({
+        type:GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR,
+        payload:error
+    })

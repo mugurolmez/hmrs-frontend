@@ -4,7 +4,8 @@ import { cityItems } from "../initialValues/cityItems"
 
 
 const initialState = {
-    cityItems: cityItems
+    cityItems: cityItems,
+    error:null
 }
 
 export default function cityReducer(state = initialState, action) {

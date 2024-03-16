@@ -2,12 +2,14 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
-import UserService from '../services/userService'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../store/thunks/userThunks'
 import { useNavigate } from 'react-router-dom'
-
-
+import { setUser } from '../store/actions/userActions'
 
 function AddUserForm() {
+  const dispatch = useDispatch()
+  const navigate=useNavigate()
 
   const initialValues = {
     email: '',
@@ -19,43 +21,14 @@ function AddUserForm() {
       .email('Invalid email format')
       .required('Required'),
     password: Yup.string().required('Required'),
-
   })
-  const navigate = new useNavigate()
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const userService = new UserService()
-      const response = await userService.addUser(values)
-      console.log('api yanıtı', response.data)
-      console.log("kayıt başarılı")
-      navigate("/userlist")
-    } catch (error) {
-      console.error('api hatası:', error)
-      if (error.response) {
-        console.log('Server hatası', error.response.data)
-      } else if (error.request) {
-        console.log('istek hatası', error.request)
-      } else {
-        console.log("genel hata", error.message)
-      }
-    } finally {
-      setSubmitting(false)
-    }
-
-
-  }
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await handleSubmit(values, { setSubmitting })
-      console.log('Form Data', values)
-
-
-    } catch (error) {
-      console.error('Form gonderme hatası', error)
-    }
-
+//eklemeden sonra Liste Yenileme eklenecek
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
+    dispatch(addUser(values))
+    setSubmitting(false)
+    resetForm()
+    dispatch(setUser())
+    navigate('/userlist')
   }
 
   return (

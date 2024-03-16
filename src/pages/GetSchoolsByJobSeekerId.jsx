@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import WorkExperinceService from '../services/workExperinceService';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
+import SchoolService from '../services/schoolService';
 
 function GetSchoolByJobSeekerId() {
   const initialValues = {
@@ -14,14 +14,14 @@ function GetSchoolByJobSeekerId() {
     jobSeekerId: Yup.string().required('Zorunlu Alan'),
   });
 
-  const [workExperiences, setWorkExperiences] = useState([]);
+  const [schools, setSchools] = useState([]);
   const [showList, setShowList] = useState(false);
 
   const fetchWorkExperiences = async (jobSeekerId) => {
     try {
-      let workExperienceService = new WorkExperinceService();
-      const result = await workExperienceService.getWorkExperiences(jobSeekerId);
-      setWorkExperiences(result.data.data);
+    
+      const result = await new SchoolService().getSchoolJobSeekerId(jobSeekerId);
+      setSchools(result.data.data);
       setShowList(true);
     } catch (error) {
       console.error('İş tecrübeleri getirme hatası:', error);
@@ -67,22 +67,23 @@ function GetSchoolByJobSeekerId() {
         <Table celled>
           <TableHeader>
             <TableRow>
-              <TableHeaderCell>İş Tecrübesi ID</TableHeaderCell>
-              <TableHeaderCell>İş Yeri</TableHeaderCell>
-              <TableHeaderCell>Pozisyon</TableHeaderCell>
+              <TableHeaderCell>Okul ID</TableHeaderCell>
+              <TableHeaderCell>Okul Adı</TableHeaderCell>
+              <TableHeaderCell>Bölüm</TableHeaderCell>
               <TableHeaderCell>Başlangıç Tarihi</TableHeaderCell>
               <TableHeaderCell>Ayrılış Tarihi</TableHeaderCell>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {workExperiences.map((workExperience) => (
-              <TableRow key={workExperience.workExperienceId}>
-                <TableCell>{workExperience.workExperienceId}</TableCell>
-                <TableCell>{workExperience.companyName}</TableCell>
-                <TableCell>{workExperience.jobPosition}</TableCell>
-                <TableCell>{workExperience.workStartYear}</TableCell>
-                <TableCell>{workExperience.yearOfDeparture}</TableCell>
+            {schools.map((school) => (
+              <TableRow key={school.schoolId}>
+                 <TableCell>{school.schoolId}</TableCell>
+                <TableCell>{school.schoolName}</TableCell>
+                <TableCell>{school.schoolDepartment}</TableCell>
+                <TableCell>{school.schoolStartYear}</TableCell>
+                <TableCell>{school.schoolYearOfGraduation}</TableCell>
+             
               </TableRow>
             ))}
           </TableBody>

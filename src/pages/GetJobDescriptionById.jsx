@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import JobDescriptionService from '../services/jobDescriptionService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobDescriptionById } from '../store/thunks/jobDescriptionThunks';
 
 
 function GetJobDescriptionById() {
+  const dispatch = useDispatch()
+  const jobDescriptionItem = useSelector(state => state.jobDescription.jobDescriptionItem)
+
+
   const initialValues = {
     jobDescriptionId: ''
   };
@@ -15,41 +20,18 @@ function GetJobDescriptionById() {
     jobDescriptionId: Yup.string().required('Zorunlu Alan')
   });
 
-  const [jobDescription, setJobDescription] = useState({});
-  const [showList, setShowList] = useState(false);
-
-  const fetchjobDescription = async (jobDescriptionId) => {
-    try {
-      let jobDescriptionService = new JobDescriptionService();
-      const result = await jobDescriptionService.getJobDescriptionById(jobDescriptionId);
-      setJobDescription(result.data.data);
-      setShowList(true);
-    } catch (error) {
-      console.error('İş  getirme hatası:', error);
-    }
+  const handleChangeJobSeekerId = async (event, formik) => {
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event);
+    dispatch(getJobDescriptionById(jobSeekerId));
   };
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await fetchjobDescription(values.jobDescriptionId);
-    } catch (error) {
-      console.error('Form gönderme hatası', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    // Sayfa başlangıcında iş tecrübelerini gösterme
-    setShowList(false);
-  }, []);
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmit}
+
       >
         {formik => (
           <Form>
@@ -58,32 +40,31 @@ function GetJobDescriptionById() {
               type='jobDescriptionId'
               label='İş Tanımı ID'
               name='jobDescriptionId'
+              onChange={(event) => handleChangeJobSeekerId(event, formik)}
             />
-            <button type='submit'>bul</button>
+         
           </Form>
         )}
       </Formik>
-
-      {showList && (
         <Table celled>
           <TableHeader>
             <TableRow>
               <TableHeaderCell>İş Tanımı ID</TableHeaderCell>
               <TableHeaderCell> İş Tanımı </TableHeaderCell>
-           
+
             </TableRow>
           </TableHeader>
 
-          <TableBody>
-            {
-              <TableRow key={jobDescription.jobDescriptionId}>
-                <TableCell>{jobDescription.jobDescriptionId}</TableCell>
-                <TableCell>{jobDescription.jobDescriptionName}</TableCell>
-              
-              </TableRow>
-            }
-          </TableBody>
+          {jobDescriptionItem && jobDescriptionItem.jobDescriptionId && (
+            <TableBody>
+              <TableRow key={jobDescriptionItem.jobDescriptionId}>
+                <TableCell>{jobDescriptionItem.jobDescriptionId}</TableCell>
+                <TableCell>{jobDescriptionItem.jobDescriptionName}</TableCell>
 
+              </TableRow>
+
+            </TableBody>
+          )}
           <TableFooter>
             <TableRow>
               <TableHeaderCell colSpan='3'>
@@ -103,10 +84,10 @@ function GetJobDescriptionById() {
             </TableRow>
           </TableFooter>
         </Table>
-      )}
+      
     </div>
   );
 }
 
-export default  GetJobDescriptionById
-;
+export default GetJobDescriptionById
+  ;

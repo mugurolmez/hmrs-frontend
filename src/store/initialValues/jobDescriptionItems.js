@@ -1,1 +1,2 @@
-export const jobDescriptionItems=[]
+export const jobDescriptionItems = []
+export const jobDescriptionItem={}

@@ -1,4 +1,4 @@
-import { ADD_HRMS_PERSON_ERROR, ADD_HRMS_PERSON_SUCCES } from "../actions/hrmsPersonActions";
+import { ADD_HRMS_PERSON_ERROR, ADD_HRMS_PERSON_SUCCESS } from "../actions/hrmsPersonActions";
 import { hrmsPersonItems } from "../initialValues/hrmsPersonItems";
 
 
@@ -9,13 +9,12 @@ const initialState={
 
 export default function hrmsPersonReducer(state=initialState,action){
     switch (action.type) {
-        case ADD_HRMS_PERSON_SUCCES:
+        case ADD_HRMS_PERSON_SUCCESS:
            return{
             ...state,
             hrmsPersonItems:action.payload,
             error:null
            } 
-
 
         case ADD_HRMS_PERSON_ERROR:
             return{

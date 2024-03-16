@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import WorkExperinceService from '../services/workExperinceService';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
+import WorkExperienceService from '../services/workExperienceService';
 
 function WorkExperienceList() {
   const initialValues = {
@@ -19,8 +19,8 @@ function WorkExperienceList() {
 
   const fetchWorkExperiences = async (jobSeekerId) => {
     try {
-      let workExperienceService = new WorkExperinceService();
-      const result = await workExperienceService.getWorkExperiences(jobSeekerId);
+      
+      const result = await new WorkExperienceService().getByJobseekerWorkExperiences(jobSeekerId);
       setWorkExperiences(result.data.data);
       setShowList(true);
     } catch (error) {

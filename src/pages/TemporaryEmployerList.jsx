@@ -20,8 +20,9 @@ import TemporaryEmployerService from '../services/temporaryEmployerService';
 import VerifyEmployerForm from '../forms/VerifyEmployerForm';
 
 
-export default function TemporaryEmployerList(temporaryEmployerId,) {
+export default function TemporaryEmployerList() {
   // Kullanıcıları depolamak için bir state kullanıyoruz.
+  //redux kullanılacak
   const [temporaryEmployers, setTemporaryEmployers] = useState([]);
   const [selectedTemporaryEmployerId, setselectedTemporaryEmployerId] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function TemporaryEmployerList(temporaryEmployerId,) {
   useEffect(() => {
 
     let temporaryEmployerService = new TemporaryEmployerService();
-    temporaryEmployerService.getTemporaryEployers().then(result => setTemporaryEmployers(result.data.data));
+    temporaryEmployerService.getAllTemporaryEployers().then(result => setTemporaryEmployers(result.data.data));
   }, []);
 
   const handleApproveClick = (temporaryEmployerId) => {
@@ -59,7 +60,7 @@ export default function TemporaryEmployerList(temporaryEmployerId,) {
             <TableHeaderCell>Password</TableHeaderCell>
             <TableHeaderCell>Şirket Adı</TableHeaderCell>
             <TableHeaderCell>Web Adresi</TableHeaderCell>
-            <TableHeaderCell>Telefon nu</TableHeaderCell>
+            <TableHeaderCell>Telefon Numarası</TableHeaderCell>
             <TableHeaderCell> Onay Durumu</TableHeaderCell>
             <TableHeaderCell></TableHeaderCell>
           </TableRow>

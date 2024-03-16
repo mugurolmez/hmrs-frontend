@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
 import { useDispatch } from 'react-redux'
-import { AddHrmsPerson } from '../store/thunks/hrmsPersonThunks'
+import { addHrmsPerson } from '../store/thunks/hrmsPersonThunks'
 
 
 
@@ -30,7 +30,7 @@ function AddHrmsPersonForm() {
   })
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    dispatch(AddHrmsPerson(values))
+    dispatch(addHrmsPerson(values))
     setSubmitting(false)
     resetForm()
 

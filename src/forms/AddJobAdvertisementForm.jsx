@@ -4,24 +4,25 @@ import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCities } from '../store/thunks/cityThunks'
-import { fetchJobDescriptions } from '../store/thunks/jobDescriptionThunks'
+import { getAllJobDescriptions } from '../store/thunks/jobDescriptionThunks'
 import { fetchWorkTypes } from '../store/thunks/workTypeThunks'
 import { fetchWorkTimes } from '../store/thunks/workTimeThunks'
-import { AddJobAdvertisement } from '../store/thunks/jobAdvertisementThunks'
+import { addJobAdvertisement } from '../store/thunks/jobAdvertisementThunks'
 
 function AddJobAdvertisementForm() {
     const dispatch = useDispatch()
     const cityData = useSelector((state) => state.city.cityItems)
-    const jobDescriptionData = useSelector((state) => state.jobDescription.jobDescriptionItems)
     const workTypeData = useSelector((state) => state.workType.workTypeItems)
     const workTimeData = useSelector((state) => state.workTime.workTimeItems)
+    const jobDescriptionData=useSelector((state)=>state.jobDescription.jobDescriptionItems)
 
     useEffect(() => {
         dispatch(fetchCities())
-        dispatch(fetchJobDescriptions())
+        dispatch(getAllJobDescriptions())
         dispatch(fetchWorkTypes())
         dispatch(fetchWorkTimes())
     }, [dispatch])
+      
 
     const cityOptions = [
         { key: 'Şehir Seçiniz', value: '' },
@@ -30,12 +31,13 @@ function AddJobAdvertisementForm() {
             value: city.id
         }))];
 
-    const jobDescriptionOptions = [
-        { key: 'İş Tanımı Seçiniz', value: '' },
-        ...jobDescriptionData.map((jobDescription) => ({
-            key: jobDescription.jobDescriptionName,
-            value: jobDescription.jobDescriptionId
-        }))];
+        const jobDescriptionOptions = [
+            { key: 'İş Tanımı Seçiniz', value: '' },
+            ...(jobDescriptionData ? jobDescriptionData.map((jobDescription) => ({
+              key: jobDescription.jobDescriptionName,
+              value: jobDescription.jobDescriptionId
+            })) : [])
+          ];
 
     const workTypeOptions = [
         { key: 'Çalışma Tipi Seçiniz', value: '' },
@@ -78,7 +80,7 @@ function AddJobAdvertisementForm() {
     })
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        dispatch(AddJobAdvertisement(values))
+        dispatch(addJobAdvertisement(values))
         setSubmitting(false)
         resetForm()
     }

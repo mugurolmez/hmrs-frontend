@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchJobDescriptions } from '../store/thunks/jobDescriptionThunks';
+import { getAllJobDescriptions } from '../store/thunks/jobDescriptionThunks';
 
 
 export default function GetAllJobDescriptions() {
@@ -10,8 +10,7 @@ export default function GetAllJobDescriptions() {
   const jobDescriptions = useSelector((state) => state.jobDescription.jobDescriptionItems)
 
   useEffect(() => {
-    
-    dispacth(fetchJobDescriptions());
+    dispacth(getAllJobDescriptions());
   }, [dispacth]);
 
   return (
@@ -27,15 +26,11 @@ export default function GetAllJobDescriptions() {
         <TableBody>
           {jobDescriptions && jobDescriptions.length > 0 &&
             jobDescriptions.map((jobDescription) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
               <TableRow key={jobDescription.jobDescriptionId}>
                 <TableCell>{jobDescription.jobDescriptionId}</TableCell>
                 <TableCell>{jobDescription.jobDescriptionName}</TableCell>
-
               </TableRow>
             ))
-
           }
         </TableBody>
 

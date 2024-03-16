@@ -1,35 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import Githubservice from '../services/githubService'
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobSeekerGithub } from '../store/thunks/githubThunks';
 
 function GetGithubByJobSeekerId() {
-  const [github, setGithub] = useState({});
-  const [, setError] = useState('');
-
-  const fetchGithub = async (jobSeekerId) => {
-    try {
-      const { data } = await new Githubservice().getGithubJobSeekerId(jobSeekerId);
-
-      if (data.data.length === 0) {
-        setError('Bulunamadı');
-      } else {
-        setGithub(data.data);
-        setError('');
-      }
-    } catch (error) {
-      console.error('Framework getirme hatası:', error);
-      setGithub([]);
-      setError('Framework Bilgisi bulunamadı');
-    }
-  };
+  const dispatch = useDispatch()
+  const githubItem = useSelector(state => state.github.githubItem)
 
   const handleChangeJobSeekerId = async (event, formik) => {
-    const selectedId = event.target.value;
+    const jobSeekerId = event.target.value;
     formik.handleChange(event);
-    await fetchGithub(selectedId);
+    dispatch(getJobSeekerGithub(jobSeekerId));
   };
 
   const initialValues = {
@@ -45,7 +29,7 @@ function GetGithubByJobSeekerId() {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-       
+
       >
         {formik => (
           <Form>
@@ -60,26 +44,24 @@ function GetGithubByJobSeekerId() {
         )}
       </Formik>
 
-      { 
+      {
         <Table celled>
           <TableHeader>
             <TableRow>
               <TableHeaderCell>GitHub ID</TableHeaderCell>
               <TableHeaderCell>Github Adres</TableHeaderCell>
-           
+
             </TableRow>
           </TableHeader>
 
-          <TableBody>
-            {
-              <TableRow key={github.githubId}>
-                <TableCell>{github.githubId}</TableCell>
-                <TableCell>{github.githubAddress}</TableCell>
-              
+          {githubItem && githubItem.githubId && (
+            <TableBody>
+              <TableRow key={githubItem.githubId}>
+                <TableCell>{githubItem.githubId}</TableCell>
+                <TableCell>{githubItem.githubAddress}</TableCell>
               </TableRow>
-            }
-          </TableBody>
-
+            </TableBody>
+          )}
           <TableFooter>
             <TableRow>
               <TableHeaderCell colSpan='3'>
@@ -105,4 +87,4 @@ function GetGithubByJobSeekerId() {
 }
 
 export default GetGithubByJobSeekerId
-;
+  ;

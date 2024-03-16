@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import EmployerService from '../services/employerService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setEmployers } from '../store/thunks/employerThunks';
 
 
 export default function EmployerList() {
-  // Kullanıcıları depolamak için bir state kullanıyoruz.
-  const [employers, setEmployers] = useState([]);
+  const dispatch=useDispatch()
+  const employers= useSelector((state)=>state.employer.employerItems)
 
   useEffect(() => {
-    // Component yüklendiğinde yapılması gereken işlemler burada yer alır.
-
-    // userService.getUsers() ile kullanıcı verilerini çekiyoruz.
-    // then bloğunda gelen veriyi setUsers ile state'e atıyoruz.
-    let employerService = new EmployerService();
-    employerService.getEmployers().then(result => setEmployers(result.data.data));
-  }, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
+    dispatch(setEmployers())
+  }, [dispatch]); 
 
   return (
     <div>
@@ -52,7 +48,7 @@ export default function EmployerList() {
 
         <TableFooter>
           <TableRow>
-            <TableHeaderCell colSpan='3'>
+            <TableHeaderCell colSpan='7'>
               <Menu floated='right' pagination>
                 <MenuItem as='a' icon>
                   <Icon name='chevron left' />

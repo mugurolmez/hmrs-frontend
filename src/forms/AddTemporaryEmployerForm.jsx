@@ -2,62 +2,32 @@ import React from 'react'
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl';
-import TemporaryEmployerService from '../services/temporaryEmployerService';
+import { useDispatch } from 'react-redux';
+import { addTemporaryEmployer } from '../store/thunks/temporaryEmployerThunks';
 
 function AddTemporaryEmployerForm() {
+  const dispatch = useDispatch()
+
   const initialValues = {
     email: '',
     password: '',
     corporateName: '',
     webSite: '',
     phoneNumber: ''
-
   }
 
   const validationSchema = Yup.object({
-
     email: Yup.string().email().required('Required'),
     password: Yup.string().required('Required'),
     corporateName: Yup.string().required('Required'),
     webSite: Yup.string().required('Required'),
-    phoneNumber: Yup.string().required('Required')
-
+    phoneNumber: Yup.string().matches(/^0[1-9]\d{9}$/, 'Geçerli bir cep telefonu numarası giriniz.').required('Required')
   })
 
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const temporaryEmployerService = new TemporaryEmployerService()
-      const response = await temporaryEmployerService.addTemporaryEployer(values)
-      console.log('api yanıtı', response.data)
-      console.log("kayıt başarılı")
-
-    } catch (error) {
-      console.error('api hatası:', error)
-      if (error.response) {
-        console.log('Server hatası', error.response.data)
-      } else if (error.request) {
-        console.log('istek hatası', error.request)
-      } else {
-        console.log("genel hata", error.message)
-      }
-    } finally {
-      setSubmitting(false)
-    }
-
-
-  }
-
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      await handleSubmit(values, { setSubmitting })
-      console.log('Form Data', values)
-      resetForm()
-
-    } catch (error) {
-      console.error('Form gonderme hatası', error)
-    }
-
+    dispatch(addTemporaryEmployer(values))
+    setSubmitting(false)
+    resetForm()
   }
 
   return (
@@ -67,7 +37,6 @@ function AddTemporaryEmployerForm() {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-
         {formik => {
           return (
             <Form>
@@ -82,19 +51,19 @@ function AddTemporaryEmployerForm() {
                 type='password'
                 label='password'
                 name='password'
-              />  
+              />
               <FormikControl
                 control='input'
                 type='corporateName'
                 label='corporateName'
                 name='corporateName'
-              /> 
-               <FormikControl
+              />
+              <FormikControl
                 control='input'
                 type='webSite'
                 label='webSite'
                 name='webSite'
-              />  
+              />
               <FormikControl
                 control='input'
                 type='phoneNumber'
