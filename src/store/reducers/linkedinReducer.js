@@ -1,6 +1,7 @@
 
-import { ADD_LANGUAGE_ERROR } from "../actions/languageActions"
-import { ADD_LINKEDIN_SUCCESS } from "../actions/linkedinActions"
+
+
+import { ADD_LINKEDIN_ERROR, ADD_LINKEDIN_SUCCESS, GET_JOBSEEKER_LINKEDIN_ERROR, GET_JOBSEEKER_LINKEDIN_SUCCESS } from "../actions/linkedinActions"
 import { linkedinItem } from "../initialValues/linkedinItem"
 
 
@@ -18,9 +19,24 @@ export default function linkedinReducer(state = initialState, action) {
                 linkedinItem: action.payload,
                 error: null
             }
-        case ADD_LANGUAGE_ERROR:
+
+        case ADD_LINKEDIN_ERROR:
             return {
                 ...state,
+                linkedinItem: null,
+                error: action.payload
+            }
+
+        case GET_JOBSEEKER_LINKEDIN_SUCCESS:
+            return {
+                ...state,
+                linkedinItem: action.payload,
+                error: null
+            }
+        case GET_JOBSEEKER_LINKEDIN_ERROR:
+            return {
+                ...state,
+                linkedinItem: null,
                 error: action.payload
             }
         default:

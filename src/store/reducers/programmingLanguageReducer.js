@@ -1,4 +1,4 @@
-import { ADD_PROGRAMMING_LANGUAGE_ERROR, ADD_PROGRAMMING_LANGUAGE_SUCCESS, GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR, GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS } from "../actions/programmingLanguageActions";
+import { ADD_PROGRAMMING_LANGUAGE_ERROR, ADD_PROGRAMMING_LANGUAGE_SUCCESS, GET_JOBSEEKER_PROGRAMMING_LANGUAGES_ERROR, GET_JOBSEEKER_PROGRAMMING_LANGUAGES_SUCCESS } from "../actions/programmingLanguageActions";
 import { programmingLanguageItems } from "../initialValues/programmingLanguageItems";
 
 
@@ -23,13 +23,13 @@ export default function programmingLanguageReducer(state = initialState, action)
             }
     
 
-        case GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_SUCCESS:
+        case GET_JOBSEEKER_PROGRAMMING_LANGUAGES_SUCCESS:
             return {
                 ...state,
                 programmingLanguageItems: action.payload,
                 error:null
             }
-            case GET_PROGRAMMING_LANGUAGES_BY_JOBSEEKERID_ERROR:
+            case GET_JOBSEEKER_PROGRAMMING_LANGUAGES_ERROR:
                 return {
                     ...state,
                     programmingLanguageItems: null,

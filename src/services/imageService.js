@@ -2,9 +2,10 @@ import axios from "axios"
 
 export default class ImageService {
 
-    imagesGetAll() {
+    getAllimages() {
         return axios.get("http://localhost:8080/image/getAllImagesResponse");
     }
+
     async oneImageDelete(id) {
         await axios.delete(`http://localhost:8080/image/delete/${id}`)
             .then(response => {
@@ -14,10 +15,11 @@ export default class ImageService {
                 console.error(error)
             })
     }
-    async addImage(jobSeekerId, file) {
+
+    async addImage(values) {
         const formData = new FormData()
-        formData.append('jobSeeekerId', jobSeekerId);
-        formData.append('image', file)
+        formData.append('jobSeekerId', values.jobSeekerId);
+        formData.append('multipartFile', values.image)
 
         try {
             const response = await axios.post(`http://localhost:8080/image/add`, formData, {

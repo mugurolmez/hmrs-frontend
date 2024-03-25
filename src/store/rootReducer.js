@@ -17,6 +17,9 @@ import workExperienceReducer from "./reducers/workExperienceReducer";
 import jobDescriptionReducer from "./reducers/jobDescriptionReducer";
 import employerReducer from "./reducers/employerReducer";
 import frameworkReducer from "./reducers/frameworkReducer";
+import imageReducer from "./reducers/imageReducer";
+import personReducer from "./reducers/personReducer";
+
 
 
 const rootReducer = combineReducers({
@@ -37,7 +40,9 @@ const rootReducer = combineReducers({
     workTime: workTimeReducer,
     workType: workTypeReducer,
     workExperience: workExperienceReducer,
-    employer:employerReducer
+    employer:employerReducer,
+    image:imageReducer,
+    person:personReducer
 })
 
 export default rootReducer;

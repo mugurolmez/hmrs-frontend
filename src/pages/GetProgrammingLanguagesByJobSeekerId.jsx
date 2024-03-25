@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import ProgrammingLanguageService from '../services/programmingLanguageService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobSeekerProgrammingLanguages } from '../store/thunks/programmingLanguagesThunks';
 
-function GetProgrammingLanguafesByJobSeekerId() {
+function GetProgrammingLanguagesByJobSeekerId() {
+
+  const dispatch = useDispatch()
+  const programmingLanguageItems = useSelector(state => state.programmingLanguage.programmingLanguageItems)
+
   const initialValues = {
     jobSeekerId: '',
   };
@@ -14,41 +19,17 @@ function GetProgrammingLanguafesByJobSeekerId() {
     jobSeekerId: Yup.string().required('Zorunlu Alan'),
   });
 
-  const [programmingLanguages, setProgrogrammingLanguages] = useState([]);
-  const [showList, setShowList] = useState(false);
-
-  const fetchProgrammingLanguages = async (jobSeekerId) => {
-    try {
-      let programmingLanguageService = new ProgrammingLanguageService();
-      const result = await programmingLanguageService.getProgrammingLanguageJobSeekerId(jobSeekerId);
-      setProgrogrammingLanguages(result.data.data);
-      setShowList(true);
-    } catch (error) {
-      console.error('Programlama dilleri getirme hatası:', error);
-    }
+  const handleChangeJobSeekerId = async (event, formik) => {
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event);
+    dispatch(getJobSeekerProgrammingLanguages(jobSeekerId));
   };
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await fetchProgrammingLanguages(values.jobSeekerId);
-    } catch (error) {
-      console.error('Form gönderme hatası', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    // Sayfa başlangıcında iş tecrübelerini gösterme
-    setShowList(false);
-  }, []);
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmit}
       >
         {formik => (
           <Form>
@@ -57,13 +38,14 @@ function GetProgrammingLanguafesByJobSeekerId() {
               type='jobSeekerId'
               label='İş Arayan ID'
               name='jobSeekerId'
+              onChange={(event) => handleChangeJobSeekerId(event, formik)}
             />
             <button type='submit'>bul</button>
           </Form>
         )}
       </Formik>
 
-      {showList && (
+      {programmingLanguageItems && (
         <Table celled>
           <TableHeader>
             <TableRow>
@@ -73,11 +55,10 @@ function GetProgrammingLanguafesByJobSeekerId() {
           </TableHeader>
 
           <TableBody>
-            {programmingLanguages.map((programmingLanguage) => (
+            {programmingLanguageItems.map((programmingLanguage) => (
               <TableRow key={programmingLanguage.programmingLanguageId}>
                 <TableCell>{programmingLanguage.programmingLanguageId}</TableCell>
                 <TableCell>{programmingLanguage.programmingLanguageName}</TableCell>
-                
               </TableRow>
             ))}
           </TableBody>
@@ -106,5 +87,5 @@ function GetProgrammingLanguafesByJobSeekerId() {
   );
 }
 
-export default GetProgrammingLanguafesByJobSeekerId
-;
+export default GetProgrammingLanguagesByJobSeekerId
+  ;

@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default class HrmsPersonService{
-getHrmsPersons(){
+getAllHrmsPersons(){
     return axios.get("http://localhost:8080/api/hrmsPersons/getall");
 }
 addHrmsPerson(hmrsPersonData){

@@ -1,20 +1,22 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import PersonService from '../services/personService';
-
+import { useSelector,useDispatch } from 'react-redux';
+import { getAllPersons } from '../store/thunks/personThunks';
 export default function PersonList() {
 
-  const [persons, setPersons] = useState([]);
+  const dispatch=useDispatch()
+  const personItems = useSelector((state) => state.person.personItems)
 
   useEffect(() => {
-    let personService = new PersonService();
-    personService.getPersons().then(result => setPersons(result.data.data));}, []);
-   
-    return (
+  dispatch(getAllPersons())
 
-      <div>
-       
-       <Table celled>
+  }, [dispatch]);
+
+  return (
+
+    <div>
+
+      <Table celled>
         <TableHeader>
           <TableRow>
             <TableHeaderCell>Kişi ID</TableHeaderCell>
@@ -28,13 +30,12 @@ export default function PersonList() {
           </TableRow>
         </TableHeader>
 
+
         <TableBody>
           {
-            persons.map((person) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+            personItems.map((person) => (
               <TableRow key={person.personId}>
-                 <TableCell>{person.personId}</TableCell>
+                <TableCell>{person.personId}</TableCell>
                 <TableCell>{person.name}</TableCell>
                 <TableCell>{person.lastName}</TableCell>
                 <TableCell>{person.birthDate}</TableCell>
@@ -42,7 +43,7 @@ export default function PersonList() {
                 <TableCell>{person.userId}</TableCell>
                 <TableCell>{person.email}</TableCell>
                 <TableCell>{person.password}</TableCell>
-       
+
               </TableRow>
             ))
 
@@ -69,8 +70,8 @@ export default function PersonList() {
         </TableFooter>
       </Table>
 
-          
-      </div>
-    )
+
+    </div>
+  )
 
 }

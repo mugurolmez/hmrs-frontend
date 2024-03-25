@@ -4,8 +4,8 @@ export default class JobSeekerService{
 getAllJobSeekers(){
     return axios.get("http://localhost:8080/api/jobSeekers/getall");
 }
-AddJobSeeker(jobSeekerData) {
-    return axios.post("http://localhost:8080/api/jobSeekers/add",jobSeekerData)
+addJobSeeker(jobSeeker) {
+    return axios.post("http://localhost:8080/api/jobSeekers/add",jobSeeker)
 }
 
 }

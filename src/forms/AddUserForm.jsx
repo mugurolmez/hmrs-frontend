@@ -5,7 +5,6 @@ import FormikControl from '../component/FormikControl'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../store/thunks/userThunks'
 import { useNavigate } from 'react-router-dom'
-import { setUser } from '../store/actions/userActions'
 
 function AddUserForm() {
   const dispatch = useDispatch()
@@ -22,12 +21,11 @@ function AddUserForm() {
       .required('Required'),
     password: Yup.string().required('Required'),
   })
-//eklemeden sonra Liste Yenileme eklenecek
+  
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     dispatch(addUser(values))
     setSubmitting(false)
     resetForm()
-    dispatch(setUser())
     navigate('/userlist')
   }
 

@@ -15,9 +15,6 @@ export default function JobSeekerList() {
     dispatch(fetchJobSeekers())
   }, [dispatch]);
 
-
-  
-
   return (
 
     <div>

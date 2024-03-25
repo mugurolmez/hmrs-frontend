@@ -13,7 +13,6 @@ export default function jobSeekerReducer(state=initialState,action){
         case ADD_JOBSEEKER_SUCCESS:
             return{
                 ...state,
-  
                 jobSeekerItems:[...state.jobSeekerItems,action.payload],
                 error:null
             }

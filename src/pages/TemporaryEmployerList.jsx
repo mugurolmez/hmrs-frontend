@@ -15,23 +15,22 @@ import {
   Table,
   Button
 } from 'semantic-ui-react';
-
-import TemporaryEmployerService from '../services/temporaryEmployerService';
 import VerifyEmployerForm from '../forms/VerifyEmployerForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTemporaryEployers } from '../store/thunks/temporaryEmployerThunks';
 
 
 export default function TemporaryEmployerList() {
-  // Kullanıcıları depolamak için bir state kullanıyoruz.
-  //redux kullanılacak
-  const [temporaryEmployers, setTemporaryEmployers] = useState([]);
+
+  const dispatch = useDispatch()
+  const temporaryEmployerItems = useSelector(state => state.temporaryEmployer.temporaryEmployerItems)
+  
   const [selectedTemporaryEmployerId, setselectedTemporaryEmployerId] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-
-    let temporaryEmployerService = new TemporaryEmployerService();
-    temporaryEmployerService.getAllTemporaryEployers().then(result => setTemporaryEmployers(result.data.data));
-  }, []);
+    dispatch(getAllTemporaryEployers())
+  }, [dispatch]);
 
   const handleApproveClick = (temporaryEmployerId) => {
     setselectedTemporaryEmployerId(temporaryEmployerId);
@@ -45,8 +44,8 @@ export default function TemporaryEmployerList() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const updateTemporaryEmployers = (updatedList) => {
-    setTemporaryEmployers(updatedList);
+  const updateTemporaryEmployers = () => {
+    getAllTemporaryEployers();
   };
 
   return (
@@ -68,9 +67,7 @@ export default function TemporaryEmployerList() {
 
         <TableBody>
           {
-            temporaryEmployers.map((temporaryEmployer) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+            temporaryEmployerItems.map((temporaryEmployer) => (
               <TableRow key={temporaryEmployer.employerId}>
                 <TableCell>{temporaryEmployer.userId}</TableCell>
                 <TableCell>{temporaryEmployer.employerId}</TableCell>
@@ -79,11 +76,11 @@ export default function TemporaryEmployerList() {
                 <TableCell>{temporaryEmployer.corporateName}</TableCell>
                 <TableCell>{temporaryEmployer.webSite}</TableCell>
                 <TableCell>{temporaryEmployer.phoneNumber}</TableCell>
-
                 <TableCell> <span style={{ color: temporaryEmployer.approvalStatus ? 'green' : 'red' }}>&bull;</span></TableCell>
+               
                 <TableCell><Button
                   onClick={() => handleApproveClick(temporaryEmployer.employerId)}
-                >Onayla</Button></TableCell>
+                >Onaylama Formu</Button></TableCell>
               </TableRow>
             ))
 
@@ -105,7 +102,7 @@ export default function TemporaryEmployerList() {
 
         <TableFooter>
           <TableRow>
-            <TableHeaderCell colSpan='3'>
+            <TableHeaderCell colSpan='9'>
               <Menu floated='right' pagination>
                 <MenuItem as='a' icon>
                   <Icon name='chevron left' />

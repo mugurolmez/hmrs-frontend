@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import SchoolService from '../services/schoolService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobSeekerSchools } from '../store/thunks/schoolThunks';
 
 function GetSchoolByJobSeekerId() {
+  const dispatch = useDispatch()
+  const schoolItems = useSelector(state => state.school.schoolItems)
+
   const initialValues = {
     jobSeekerId: '',
   };
@@ -14,41 +18,17 @@ function GetSchoolByJobSeekerId() {
     jobSeekerId: Yup.string().required('Zorunlu Alan'),
   });
 
-  const [schools, setSchools] = useState([]);
-  const [showList, setShowList] = useState(false);
-
-  const fetchWorkExperiences = async (jobSeekerId) => {
-    try {
-    
-      const result = await new SchoolService().getSchoolJobSeekerId(jobSeekerId);
-      setSchools(result.data.data);
-      setShowList(true);
-    } catch (error) {
-      console.error('İş tecrübeleri getirme hatası:', error);
-    }
+  const handleChangeJobSeekerId = async (event, formik) => {
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event);
+    dispatch(getJobSeekerSchools(jobSeekerId));
   };
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await fetchWorkExperiences(values.jobSeekerId);
-    } catch (error) {
-      console.error('Form gönderme hatası', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    // Sayfa başlangıcında iş tecrübelerini gösterme
-    setShowList(false);
-  }, []);
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmit}
       >
         {formik => (
           <Form>
@@ -57,13 +37,13 @@ function GetSchoolByJobSeekerId() {
               type='jobSeekerId'
               label='İş Arayan ID'
               name='jobSeekerId'
+              onChange={(event) => handleChangeJobSeekerId(event, formik)}
             />
-            <button type='submit'>bul</button>
           </Form>
         )}
       </Formik>
 
-      {showList && (
+      {schoolItems && (
         <Table celled>
           <TableHeader>
             <TableRow>
@@ -76,21 +56,21 @@ function GetSchoolByJobSeekerId() {
           </TableHeader>
 
           <TableBody>
-            {schools.map((school) => (
+            {schoolItems.map((school) => (
               <TableRow key={school.schoolId}>
-                 <TableCell>{school.schoolId}</TableCell>
+                <TableCell>{school.schoolId}</TableCell>
                 <TableCell>{school.schoolName}</TableCell>
                 <TableCell>{school.schoolDepartment}</TableCell>
                 <TableCell>{school.schoolStartYear}</TableCell>
                 <TableCell>{school.schoolYearOfGraduation}</TableCell>
-             
+
               </TableRow>
             ))}
           </TableBody>
 
           <TableFooter>
             <TableRow>
-              <TableHeaderCell colSpan='3'>
+              <TableHeaderCell colSpan='5'>
                 <Menu floated='right' pagination>
                   <MenuItem as='a' icon>
                     <Icon name='chevron left' />
@@ -113,4 +93,4 @@ function GetSchoolByJobSeekerId() {
 }
 
 export default GetSchoolByJobSeekerId
-;
+  ;

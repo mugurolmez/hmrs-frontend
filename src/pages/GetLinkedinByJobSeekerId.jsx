@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import LinkedinService from '../services/linkedinService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobSeekerLinkedin } from '../store/thunks/linkedinThunks';
 
 function GetLinkedinByJobSeekerId() {
+  const dispatch=useDispatch()
+  const linkedinItem=useSelector(state=>state.linkedin.linkedinItem)
+
   const initialValues = {
     jobSeekerId: ''
   };
@@ -14,41 +18,17 @@ function GetLinkedinByJobSeekerId() {
     jobSeekerId: Yup.string().required('Zorunlu Alan')
   });
 
-  const [linkedin, setlinekdin] = useState({});
-  const [showList, setShowList] = useState(false);
-
-  const fetchLinkedin = async (jobSeekerId) => {
-    try {
-      let linkedinService = new LinkedinService();
-      const result = await linkedinService.getLinkedinJobSeekerId(jobSeekerId);
-      setlinekdin(result.data.data);
-      setShowList(true);
-    } catch (error) {
-      console.error('İş tecrübeleri getirme hatası:', error);
-    }
+  const handleChangeJobSeekerId = async (event, formik) => {
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event);
+    dispatch(getJobSeekerLinkedin(jobSeekerId));
   };
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await fetchLinkedin(values.jobSeekerId);
-    } catch (error) {
-      console.error('Form gönderme hatası', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    // Sayfa başlangıcında iş tecrübelerini gösterme
-    setShowList(false);
-  }, []);
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmit}
       >
         {formik => (
           <Form>
@@ -57,13 +37,12 @@ function GetLinkedinByJobSeekerId() {
               type='jobSeekerId'
               label='İş Arayan ID'
               name='jobSeekerId'
+              onChange={(event) => handleChangeJobSeekerId(event, formik)}
             />
-            <button type='submit'>bul</button>
           </Form>
         )}
       </Formik>
-
-      {showList && (
+      
         <Table celled>
           <TableHeader>
             <TableRow>
@@ -72,17 +51,14 @@ function GetLinkedinByJobSeekerId() {
            
             </TableRow>
           </TableHeader>
-
+          {linkedinItem && (
           <TableBody>
-            {
-              <TableRow key={linkedin.linkedinId}>
-                <TableCell>{linkedin.linkedinId}</TableCell>
-                <TableCell>{linkedin.linkedinAddress}</TableCell>
-              
+              <TableRow key={linkedinItem.linkedinId}>
+                <TableCell>{linkedinItem.linkedinId}</TableCell>
+                <TableCell>{linkedinItem.linkedinAddress}</TableCell>
               </TableRow>
-            }
           </TableBody>
-
+          )}
           <TableFooter>
             <TableRow>
               <TableHeaderCell colSpan='3'>
@@ -102,7 +78,7 @@ function GetLinkedinByJobSeekerId() {
             </TableRow>
           </TableFooter>
         </Table>
-      )}
+    
     </div>
   );
 }

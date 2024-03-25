@@ -1,10 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Divider, Dropdown, Menu } from 'semantic-ui-react'
+import { Divider, Dropdown, Grid, Menu } from 'semantic-ui-react'
 
 function AdminLeftsidebar() {
   return (
     <div>
+      <Grid>
+
+      
       <Menu vertical inverted>
         <Menu.Item>
           <Dropdown.Item>Admin Dashboard</Dropdown.Item>
@@ -48,6 +51,7 @@ function AdminLeftsidebar() {
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
+
         <Menu.Item>
           <Dropdown item text='İşveren Listeleri'>
             <Dropdown.Menu>
@@ -106,8 +110,9 @@ function AdminLeftsidebar() {
         <Menu.Item>
           <Dropdown item text='Resim İşlemleri'>
             <Dropdown.Menu>
-              <Dropdown.Item as={NavLink} to='/imagegetallimages'>Resim Listesi</Dropdown.Item>
+              <Dropdown.Item as={NavLink} to='/getallimages'>Tüm Resimleri Göster</Dropdown.Item>
               <Dropdown.Item as={NavLink} to='/addimageform'>Resim Ekleme Formu</Dropdown.Item>
+              <Dropdown.Item as={NavLink} to='/getallimagelist'>Resim Listesi</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Item>
@@ -184,7 +189,9 @@ function AdminLeftsidebar() {
           </Dropdown>
         </Menu.Item>
       </Menu>
+      </Grid>
     </div>
+    
   )
 }
 

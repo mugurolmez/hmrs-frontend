@@ -1,1 +1,1 @@
-export const jobseekerWorkExperienceItems=[]
+export const workExperienceItems=[]

@@ -24,8 +24,8 @@ export const getAllFrameworkJobSeekerId = (values) => {
         try {
             const response = await new FrameworkService().getFrameworkJobSeekerId(values)
             dispatch(setFrameworksByJobSeekerIdSuccess(response.data.data))
-            console.log(response.data.message)
-            console.log(response.data.success)
+            console.log("API Yanıtı - Başarı:", response.data.success);
+            console.log("API Yanıtı - Mesaj:", response.data.message);
         } catch (error) {
             dispatch(setFrameworksByJobSeekerIdError(error))
             console.log('kayıt hatası', error)

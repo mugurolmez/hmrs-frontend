@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFramework } from '../store/thunks/frameworkThunks';
-import { getProgramminglanguagesByJobSeekerId } from '../store/thunks/programmingLanguagesThunks';
+import { getJobSeekerProgrammingLanguages } from '../store/thunks/programmingLanguagesThunks';
 //jobseeker veri girip silince sorgu atması engellenecek
 
 function AddFrameworkForm() {
@@ -18,7 +18,7 @@ function AddFrameworkForm() {
     formik.handleChange(event)
 
     if (jobSeekerId.trim() !== '') {
-      dispatch(getProgramminglanguagesByJobSeekerId(jobSeekerId));
+      dispatch(getJobSeekerProgrammingLanguages(jobSeekerId));
     }
 
   };

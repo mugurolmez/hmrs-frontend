@@ -1,4 +1,4 @@
-import { ADD_LANGUAGE_ERROR, ADD_LANGUAGE_SUCCESS, SET_LANGUAGES } from "../actions/languageActions";
+import { ADD_LANGUAGE_ERROR, ADD_LANGUAGE_SUCCESS, GET_JOBSEEKER_LANGUAGES_ERROR, GET_JOBSEEKER_LANGUAGES_SUCCESS } from "../actions/languageActions";
 import { languageItems } from "../initialValues/languageItems"
 
 
@@ -20,9 +20,17 @@ export default function languageReducer(state = initialState, action) {
                 ...state,
                 error: action.payload
             }
-        case SET_LANGUAGES:
+            
+        case GET_JOBSEEKER_LANGUAGES_SUCCESS:
             return {
                 ...state,
+                languageItems:action.payload,
+                error: null
+            }
+            case GET_JOBSEEKER_LANGUAGES_ERROR:
+            return {
+                ...state,
+                languageItems:null,
                 error: action.payload
             }
         default:

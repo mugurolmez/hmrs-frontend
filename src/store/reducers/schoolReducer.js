@@ -1,4 +1,4 @@
-import { ADD_SCHOOL_ERROR, ADD_SCHOOL_SUCCESS, SET_SCHOOL } from "../actions/schoolActions";
+import { ADD_SCHOOL_ERROR, ADD_SCHOOL_SUCCESS, GET_JOBSEEKER_SCHOOLS_ERROR, GET_JOBSEEKER_SCHOOLS_SUCCESS } from "../actions/schoolActions";
 import { schoolItems } from "../initialValues/schoolItems";
 
 
@@ -18,13 +18,21 @@ export default function schoolReducer(state=initialState,action){
             case ADD_SCHOOL_ERROR:
             return{
                 ...state,
+                schoolItems:null,
                 error:action.payload
             }
-            case SET_SCHOOL:
+            case GET_JOBSEEKER_SCHOOLS_SUCCESS:
                 return{
                     ...state,
-                    schoolItems:action.payload
+                    schoolItems:action.payload,
+                    error:null
                 }
+                case GET_JOBSEEKER_SCHOOLS_ERROR:
+                    return{
+                        ...state,
+                        schoolItems:null,
+                        error:action.payload
+                    }
     
         default:
             return state

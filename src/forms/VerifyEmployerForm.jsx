@@ -4,9 +4,10 @@ import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { useDispatch } from 'react-redux';
 import { verifyEmployer } from '../store/thunks/hrmsPersonThunks';
-import { setTemporaryEmployers } from '../store/actions/temporaryEmployerActions';
-//lisye yenıleme eklenececk
+
+
 function VerifyEmployerForm({ temporaryEmployerId, closeModal }) {
+   
     const dispatch = useDispatch()
 
     const initialValues = {
@@ -22,13 +23,11 @@ function VerifyEmployerForm({ temporaryEmployerId, closeModal }) {
     });
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        dispatch(verifyEmployer(values))
-        dispatch(setTemporaryEmployers())
+         dispatch(verifyEmployer(values))
         setSubmitting(false)
         resetForm()
         closeModal()
     };
-
 
     return (
         <div className='form-control'>

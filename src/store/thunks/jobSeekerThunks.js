@@ -4,7 +4,7 @@ import { addJobseekerError, addJobseekerSuccess, setJobSeekers } from "../action
 
 export const addJobSeeker=(values)=>async(dispatch)=>{
 try{
-    const response= await new JobSeekerService().AddJobSeeker(values)
+    const response= await new JobSeekerService().addJobSeeker(values)
     dispatch(addJobseekerSuccess(values))
     console.log("API Yanıtı - Başarı:", response.data.success);
     console.log("API Yanıtı - Mesaj:", response.data.message);

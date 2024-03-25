@@ -1,10 +1,10 @@
-import { ADD_WORK_EXPERIENCE_ERROR, ADD_WORK_EXPERIENCE_SUCCESS } from "../actions/workExperienceActions";
-import { jobseekerWorkExperienceItems } from "../initialValues/workExperienceItems";
+import { ADD_WORK_EXPERIENCE_ERROR, ADD_WORK_EXPERIENCE_SUCCESS, GET_JOB_SEEKER_WORKEXPERIENCES_ERROR, GET_JOB_SEEKER_WORKEXPERIENCES_SUCCESS } from "../actions/workExperienceActions";
+import {workExperienceItems } from "../initialValues/workExperienceItems";
 
 
 
 const initialState={
-    jobSeekerWorkExperienceItems:jobseekerWorkExperienceItems,
+    workExperienceItems:workExperienceItems,
     error:null
 }
 
@@ -13,7 +13,7 @@ export default function workExperienceReducer(state=initialState,action){
         case ADD_WORK_EXPERIENCE_SUCCESS:
             return{
                 ...state,
-                jobSeekerWorkExperienceItems:[...state.jobSeekerWorkExperienceItems,action.payload],
+                workExperienceItems:[...state.workExperienceItems,action.payload],
                 error:null
             }
             case ADD_WORK_EXPERIENCE_ERROR:
@@ -21,6 +21,20 @@ export default function workExperienceReducer(state=initialState,action){
                     ...state,
                     error:action.payload
                 }
+
+        case GET_JOB_SEEKER_WORKEXPERIENCES_SUCCESS:
+            return{
+                ...state,
+                workExperienceItems:action.payload,
+                error:null
+            }    
+
+            case GET_JOB_SEEKER_WORKEXPERIENCES_ERROR:
+                return{
+                    ...state,
+                    workExperienceItems:[],
+                    error:action.payload
+                }  
         default:
            return state
     }

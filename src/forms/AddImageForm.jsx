@@ -1,12 +1,13 @@
-import axios from 'axios';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl';
+import { useDispatch } from 'react-redux';
+import { addImage } from '../store/thunks/imageThunks';
 
 
-
+//resim ekleniyor ama console hata veriyor bakılacak
 function AddImageForm() {
-
+   const dispatch = useDispatch()
 
     const initialValues = {
         jobSeekerId: '',
@@ -20,27 +21,10 @@ function AddImageForm() {
     })
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        try {
-
-            const formData = new FormData();
-            formData.append('jobSeekerId', values.jobSeekerId);
-            formData.append('multipartFile', values.image);
-            
-            const response = await axios.post('http://localhost:8080/image/add', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-
-            console.log('Image upload response:', response.data);
-         resetForm()
-
-        } catch (error) {
-            console.error('Image upload error:', error);
-        } finally {
-            setSubmitting(false)
-
-        }
+        dispatch(addImage(values))
+        console.log('add values',values)
+        resetForm()
+        setSubmitting(false)
     };
 
     return (

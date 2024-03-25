@@ -4,13 +4,11 @@ import { Route, Routes } from 'react-router-dom'
 import UserList from "../pages/UsersList"
 import JobSeekerList from "../pages/JobSeekersList"
 import EmployerList from '../pages/EmployerList'
-import ImagesList from '../pages/ImagesList'
 import TemporaryEmployerList from '../pages/TemporaryEmployerList'
 import HrmsPersonsList from '../pages/HrmsPersonsList'
 import AddUserForm from '../forms/AddUserForm'
 import AllActiveJobAdvertisemenstList from '../pages/AllActiveJobAdvertisementsList'
 import AllPassiveJobAdvertisemenstList from '../pages/AllPassiveJobAdvertisementsList'
-import ImageGetAllImages from '../pages/ImageGetAllImages'
 import AddImageForm from '../forms/AddImageForm'
 import WorkExperinceAddForm from '../forms/WorkExperinceAddForm'
 import WorkExperienceList from '../pages/WorkExperinceList'
@@ -41,13 +39,12 @@ import VerifyEmployerForm from '../forms/VerifyEmployerForm'
 import AddJobAdvertisementForm from '../forms/AddJobAdvertisementForm'
 import AddCoverLetterFrom from '../forms/AddCoverLetterForm'
 import AddFrameworkForm from '../forms/AddFrameworkForm'
-
+import GetAllImages from '../pages/GetAllImages'
+import ImagesList from '../pages/ImagesList'
 
 export default function Dashboard() {
   return (
-
-    <Grid >
-
+    <Grid>
       <GridColumn width={14} textAlign='left'>
         <Routes>
           <Route path="/" Component={AddProgrammingLanguageForm} />
@@ -56,12 +53,11 @@ export default function Dashboard() {
           <Route path="/jobSeekerList" Component={JobSeekerList} />
           <Route path="/hrmsPersonsList" Component={HrmsPersonsList} />
           <Route path="/employerList" Component={EmployerList} />
-          <Route path="/imageList" Component={ImagesList} />
+          <Route path="/getallimages" Component={GetAllImages} />
           <Route path="/temporaryEmployerList" Component={TemporaryEmployerList} />
           <Route path="/getalljobdescriptions" Component={GetAllJobDescriptions} />
           <Route path="/allactivejobAdvertisementsList" Component={AllActiveJobAdvertisemenstList} />
           <Route path="/allpassivejobAdvertisementsList" Component={AllPassiveJobAdvertisemenstList} />
-          <Route path="/imagegetallimages" Component={ImageGetAllImages} />
           <Route path="/addimageform" Component={AddImageForm} />
           <Route path='/workexperinceaddform' Component={WorkExperinceAddForm} />
           <Route path='/workexperincelist' Component={WorkExperienceList} />
@@ -92,6 +88,7 @@ export default function Dashboard() {
           <Route path='/getcoverletterbyjobseekerid' Component={GetCoverLetterByJobSeekerId} />
           <Route path='/verifyemployerform' Component={VerifyEmployerForm} />
           <Route path='/addjobadvertisementform' Component={AddJobAdvertisementForm} />
+          <Route path='/getAllimagelist' Component={ImagesList} />
         </Routes>
       </GridColumn>
     </Grid>

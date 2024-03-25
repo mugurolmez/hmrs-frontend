@@ -17,18 +17,9 @@ function App() {
           <GridRow >
             <GridColumn width={2}><LeftSidebar /></GridColumn>
             <GridColumn width={14}> <Dashboard /> </GridColumn>
-
           </GridRow>
         </Grid>
       </Container>
-
-
-
-
-
-
-
-
 
     </div>
   );

@@ -8,9 +8,6 @@ function ImageInput(props) {
     const [imagePreview, setImagePreview] = useState(null);
     const { setFieldValue } = useFormikContext()
 
-
-
-
     const handleImageFileChange = (event) => {
         const file = event.target.files[0]
 
@@ -33,7 +30,7 @@ function ImageInput(props) {
         <div className='form-control'>
 
             <label htmlFor={name}>{label}</label>
-            {imagePreview && <Image src={imagePreview} size='medium' />}
+            {imagePreview && <Image src={imagePreview} size='small' />}
             <Input type='file' onChange={handleImageFileChange} />
 
 

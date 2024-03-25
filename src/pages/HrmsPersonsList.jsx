@@ -1,19 +1,21 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect } from 'react'
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import HrmsPersonService from '../services/hrmsPersonService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllHrmsPersons } from '../store/thunks/hrmsPersonThunks';
 
 export default function HrmsPersonsList() {
-
-  const [hrmsPersons, setHrmsPersons] = useState([]);
+  const dispatch=useDispatch()
+  const hrmsPersonItems=useSelector(state=>state.hrmsPerson.hrmsPersonItems)
 
   useEffect(() => {
-    let hrmsPersonService = new HrmsPersonService();
-        hrmsPersonService.getHrmsPersons().then(result=>setHrmsPersons(result.data.data));},[]);
+   dispatch(getAllHrmsPersons())
+  }, [dispatch]);
+
   
     return (
 
       <div>
-       
+             {hrmsPersonItems && (
        <Table celled>
         <TableHeader>
           <TableRow>
@@ -31,9 +33,7 @@ export default function HrmsPersonsList() {
 
         <TableBody>
           {
-            hrmsPersons.map((hrmsperson) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+            hrmsPersonItems.map((hrmsperson) => (
               <TableRow key={hrmsperson.hrmsPersonId}>
                 <TableCell>{hrmsperson.userId}</TableCell>
                 <TableCell>{hrmsperson.personId}</TableCell>
@@ -45,12 +45,9 @@ export default function HrmsPersonsList() {
                 <TableCell>{hrmsperson.birthDate}</TableCell>
                 <TableCell>{hrmsperson.nationalityNumber}</TableCell>
               </TableRow>
-            ))
-
-          }
+            ))}
         </TableBody>
 
-      
         <TableFooter >
           <TableRow >
             <TableHeaderCell colSpan='9'>
@@ -71,7 +68,7 @@ export default function HrmsPersonsList() {
         </TableFooter>
       </Table>
   
-          
+             )}
       </div>
     )
 

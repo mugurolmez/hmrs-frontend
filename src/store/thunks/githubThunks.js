@@ -25,8 +25,8 @@ export const getJobSeekerGithub=(jobSeekerId)=>{
         try{
             const response =await new GithubService().getGithubJobSeekerId(jobSeekerId)
             dispatch(getJobSeekerGithubSuccess(response.data.data))
-            console.log(response.data.message)
-            console.log(response.data.success)
+            console.log("API Yanıtı - Başarı:", response.data.success);
+            console.log("API Yanıtı - Mesaj:", response.data.message);
         }catch(error){
             dispatch(getJobSeekerGithubError(error))
             console.log("Getirme hatası", error)

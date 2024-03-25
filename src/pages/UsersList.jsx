@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import UserService from '../services/userService.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUser } from '../store/thunks/userThunks.js';
 
 export default function UserList() {
-  // Kullanıcıları depolamak için bir state kullanıyoruz.
-  const [users, setUsers] = useState([]);
+  const dispatch = useDispatch()
+  const userItems = useSelector(state => state.user.userItems)
 
   useEffect(() => {
-    // Component yüklendiğinde yapılması gereken işlemler burada yer alır.
-    
-    // userService.getUsers() ile kullanıcı verilerini çekiyoruz.
-    // then bloğunda gelen veriyi setUsers ile state'e atıyoruz.
-    let userService = new UserService();
-    userService.getUsers().then(result => setUsers(result.data.data));}, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
+    dispatch(getAllUser())
+  }, [dispatch]);
 
-    
+
   return (
     <div>
+        
       <Table celled>
         <TableHeader>
           <TableRow>
-          <TableHeaderCell>Kullanıcı ID</TableHeaderCell>
+            <TableHeaderCell>Kullanıcı ID</TableHeaderCell>
             <TableHeaderCell>Email</TableHeaderCell>
             <TableHeaderCell>Şifre</TableHeaderCell>
           </TableRow>
@@ -28,17 +26,13 @@ export default function UserList() {
 
         <TableBody>
           {
-            users.map((user) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
+            userItems.map((user) => (
               <TableRow key={user.userId}>
-               <TableCell>{user.userId}</TableCell>
+                <TableCell>{user.userId}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.password}</TableCell>
               </TableRow>
-            ))
-
-          }
+            )) }
         </TableBody>
 
         <TableFooter>
@@ -60,6 +54,7 @@ export default function UserList() {
           </TableRow>
         </TableFooter>
       </Table>
+   
     </div>
-  );
+  )
 }

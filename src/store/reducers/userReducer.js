@@ -1,4 +1,4 @@
-import { ADD_USER_ERROR, ADD_USER_SUCCESS, SET_USERS } from "../actions/userActions";
+import { ADD_USER_ERROR, ADD_USER_SUCCESS, GET_ALL_USER_ERROR, GET_ALL_USER_SUCCESS } from "../actions/userActions";
 import { userItems } from "../initialValues/userItems";
 
 const initialState = {
@@ -20,10 +20,16 @@ export default function userReducer(state = initialState, action) {
                 ...state,
                 error: null
             }
-        case SET_USERS:
+        case GET_ALL_USER_SUCCESS:
             return {
                 ...state,
                 userItems: action.payload,
+                error: null
+            }
+        case GET_ALL_USER_ERROR:
+            return {
+                ...state,
+                error: action.payload
             }
 
         default:

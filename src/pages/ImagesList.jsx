@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import ImageService from '../services/imageService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllImages } from '../store/thunks/imageThunks';
 
 export default function ImagesList() {
-  // Kullanıcıları depolamak için bir state kullanıyoruz.
-  const [images, setImages] = useState([]);
+  const dispatch = useDispatch()
+  const imageItems = useSelector(state => state.image.imageItems)
+
 
   useEffect(() => {
-    // Component yüklendiğinde yapılması gereken işlemler burada yer alır.
-    
-    // userService.getUsers() ile kullanıcı verilerini çekiyoruz.
-    // then bloğunda gelen veriyi setUsers ile state'e atıyoruz.
-    let imageService = new ImageService();
-    imageService.getImages().then(result => setImages(result.data));}, []); // useEffect'in sadece bir kere çalışması için boş dependency array kullanıyoruz.
+    dispatch(getAllImages())
+  }, [dispatch]);
 
   return (
     <div>
@@ -24,28 +22,26 @@ export default function ImagesList() {
             <TableHeaderCell>Adı</TableHeaderCell>
             <TableHeaderCell>Resim Id</TableHeaderCell>
             <TableHeaderCell>Resim Adresi</TableHeaderCell>
-            
           </TableRow>
         </TableHeader>
 
-        <TableBody>
-          {
-            images.map((image) => (
-              // Her bir kullanıcı için TableRow oluşturuyoruz.
-              // key prop'unu eklememiz React'in listeleri efektif bir şekilde yönetmesine yardımcı olur.
-              <TableRow key={image.id}>
-                <TableCell>{image.id}</TableCell>
-                <TableCell>{image.jobSeekerId}</TableCell>
-                <TableCell>{image.name}</TableCell>
-                <TableCell>{image.id}</TableCell>
-                <TableCell>{image.imageId}</TableCell>
-            
-              </TableRow>
-            ))
+        {imageItems && (
+          <TableBody>
+            {
+              imageItems.map((image) => (
+                <TableRow key={image.id}>
+                  <TableCell>{image.id}</TableCell>
+                  <TableCell>{image.job_seeker_id}</TableCell>
+                  <TableCell>{image.name}</TableCell>
+                  <TableCell>{image.id}</TableCell>
+                  <TableCell>{image.imageId}</TableCell>
 
-          }
-        </TableBody>
+                </TableRow>
+              ))
 
+            }
+          </TableBody>
+        )}
         <TableFooter>
           <TableRow>
             <TableHeaderCell colSpan='3'>

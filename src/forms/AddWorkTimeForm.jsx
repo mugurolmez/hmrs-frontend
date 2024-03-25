@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../component/FormikControl'
 import { useDispatch } from 'react-redux'
-import { addWorkTime } from '../store/thunks/workTimeThunks'
+import { addWorkTime, fetchWorkTimes } from '../store/thunks/workTimeThunks'
 
 
 
@@ -21,6 +21,7 @@ function AddWorkTimeFrom() {
 
   const onSubmit = async (values, { setSubmitting,resetForm }) => {
     dispatch(addWorkTime(values))
+    dispatch(fetchWorkTimes())
     setSubmitting(false)
     resetForm()
   }

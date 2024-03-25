@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import FormikControl from '../component/FormikControl';
 import { Form, Formik } from 'formik';
 import { TableRow, TableHeaderCell, TableHeader, TableFooter, TableCell, TableBody, MenuItem, Icon, Menu, Table } from 'semantic-ui-react';
-import WorkExperienceService from '../services/workExperienceService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobSeekerWorkExperiences } from '../store/thunks/workExperienceThunks';
 
 function WorkExperienceList() {
+  const dispatch=useDispatch()
+  const workExperinceItems=useSelector(state=>state.workExperience.workExperienceItems)
+
   const initialValues = {
     jobSeekerId: '',
   };
@@ -14,41 +18,18 @@ function WorkExperienceList() {
     jobSeekerId: Yup.string().required('Zorunlu Alan'),
   });
 
-  const [workExperiences, setWorkExperiences] = useState([]);
-  const [showList, setShowList] = useState(false);
-
-  const fetchWorkExperiences = async (jobSeekerId) => {
-    try {
-      
-      const result = await new WorkExperienceService().getByJobseekerWorkExperiences(jobSeekerId);
-      setWorkExperiences(result.data.data);
-      setShowList(true);
-    } catch (error) {
-      console.error('İş tecrübeleri getirme hatası:', error);
-    }
+  const handleChangeJobSeekerId = async (event, formik) => {
+    const jobSeekerId = event.target.value;
+    formik.handleChange(event);
+    dispatch(getJobSeekerWorkExperiences(jobSeekerId));
+   
   };
-
-  const onSubmit = async (values, { setSubmitting }) => {
-    try {
-      await fetchWorkExperiences(values.jobSeekerId);
-    } catch (error) {
-      console.error('Form gönderme hatası', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    // Sayfa başlangıcında iş tecrübelerini gösterme
-    setShowList(false);
-  }, []);
 
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={onSubmit}
       >
         {formik => (
           <Form>
@@ -57,13 +38,14 @@ function WorkExperienceList() {
               type='jobSeekerId'
               label='JobSeekerId'
               name='jobSeekerId'
+              onChange={(event) => handleChangeJobSeekerId(event, formik)}
             />
             <button type='submit'>bul</button>
           </Form>
         )}
       </Formik>
 
-      {showList && (
+      {workExperinceItems && (
         <Table celled>
           <TableHeader>
             <TableRow>
@@ -76,7 +58,7 @@ function WorkExperienceList() {
           </TableHeader>
 
           <TableBody>
-            {workExperiences.map((workExperience) => (
+            {workExperinceItems.map((workExperience) => (
               <TableRow key={workExperience.workExperienceId}>
                 <TableCell>{workExperience.workExperienceId}</TableCell>
                 <TableCell>{workExperience.companyName}</TableCell>
