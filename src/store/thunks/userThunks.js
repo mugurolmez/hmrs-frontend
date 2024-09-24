@@ -6,9 +6,10 @@ import { addUserError, addUserSuccess, getAllUserError, getAllUserSuccess } from
 export const addUser=(values)=>async(dispatch)=>{
     try{
         const response= await new UserService().addUser(values)
-        dispatch(addUserSuccess(response.data.data))
-        console.log("API Yanıtı - Başarı:", response.data.success);
-        console.log("API Yanıtı - Mesaj:", response.data.message);
+        
+        dispatch(addUserSuccess(response.data))
+        console.log("API Yanıtı - Başarı:", response.success);
+        console.log("API Yanıtı - Mesaj:", response.message);
     
     }catch(error){
         dispatch(addUserError(error))
@@ -18,9 +19,11 @@ export const addUser=(values)=>async(dispatch)=>{
 export const getAllUser=()=>async(dispatch)=>{
     try{
         const response= await new UserService().getAllUsers()
-        dispatch(getAllUserSuccess(response.data.data))
-        console.log("API Yanıtı - Başarı:", response.data.success);
-        console.log("API Yanıtı - Mesaj:", response.data.message);
+
+        console.log('userhunk console'+JSON.stringify(response.data))
+        dispatch(getAllUserSuccess(response.data))
+        console.log("API Yanıtı - Başarı:", response.success);
+        console.log("API Yanıtı - Mesaj:", response.message);
     }catch(error){
         dispatch(getAllUserError(error))
     }

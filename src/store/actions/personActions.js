@@ -1,4 +1,3 @@
-import { personItem,personItems } from "../initialValues/personItems"
 
 export const ADD_PERSON_SUCCESS='ADD_PERSON_SUCCESS'
 export const ADD_PERSON_ERROR='ADD_PERSON_ERROR'
